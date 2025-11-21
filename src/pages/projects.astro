@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+---
+
+<Layout>
+    <section class="min-h-screen bg-base-200 pt-24 px-6">
+        <div class="container mx-auto max-w-7xl">
+            <h1 class="text-5xl font-bold text-primary mb-12 text-center">
+                My Projects
+            </h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <Card
+                    name="NextMart"
+                    desc="E-Commerce platform built with Next.js and Django, featuring modern UI"
+                    skill1="Next.js"
+                    skill2="Django"
+                    github="https://github.com/heartnet123/ecommerce-nextmart"
+                    image="/projects/nextmart.png"
+                />
+                <Card
+                    name="BookCube"
+                    desc="A platform for managing and discovering books, built with Django"
+                    skill1="Django"
+                    github="https://github.com/heartnet123/BookCube"
+                    image="/projects/bookcube.png"
+                />
+                <Card
+                    name="Home Kitchen Inventory Management"
+                    desc="An application to manage kitchen inventory"
+                    skill1="Tauri"
+                    skill2="SvelteKit"
+                    github="https://github.com/heartnet123/kitcheninventory"
+                    image="/projects/kitchen.png"
+                />
+                <Card
+                    name="Home Kitchen Inventory Management"
+                    desc="An application to manage kitchen inventory, built with Tauri, SvelteKit, and SQLite."
+                    skill1="Tauri"
+                    skill2="SvelteKit"
+                    github="https://github.com/heartnet123/kitcheninventory"
+                    image="/projects/kitchen.png"
+                />
+                <Card
+                    name="Home Kitchen Inventory Management"
+                    desc="An application to manage kitchen inventory, built with Tauri, SvelteKit, and SQLite."
+                    skill1="Tauri"
+                    skill2="SvelteKit"
+                    github="https://github.com/heartnet123/kitcheninventory"
+                    image="/projects/kitchen.png"
+                />
+                <Card
+                    name="Home Kitchen Inventory Management"
+                    desc="An application to manage kitchen inventory, built with Tauri, SvelteKit, and SQLite."
+                    skill1="Tauri"
+                    skill2="SvelteKit"
+                    github="https://github.com/heartnet123/kitcheninventory"
+                    image="/projects/kitchen.png"
+                />
+            </div>
+        </div>
+    </section>
+</Layout>

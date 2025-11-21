@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const observerOptions = {
     root: null,
-    rootMargin: '-80px 0px 0px 0px', 
-    threshold: 0.1 
+    rootMargin: '-64px 0px 0px 0px',
+    threshold: 0
   };
 
   const observerCallback = (entries, observer) => {
