@@ -1,9 +1,6 @@
 document.addEventListener('astro:page-load', () => {
-  console.log('Scroll tracker script loaded.');
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.tabs a.tab[href^="#"]');
-  console.log('Sections found:', sections.length);
-  console.log('Nav links found:', navLinks.length);
 
   const observerOptions = {
     root: null,
@@ -15,17 +12,13 @@ document.addEventListener('astro:page-load', () => {
     entries.forEach(entry => {
       const id = entry.target.getAttribute('id');
       const navLink = document.querySelector(`.tabs a.tab[href="#${id}"]`);
-      console.log(`Section: ${id}, isIntersecting: ${entry.isIntersecting}`);
 
       if (entry.isIntersecting) {
-        console.log(`Activating tab for section: ${id}`);
         navLinks.forEach(link => {
           link.classList.remove('tab-active');
         });
         if (navLink) {
           navLink.classList.add('tab-active');
-        } else {
-          console.error(`No navLink found for section ID: ${id}`);
         }
       }
     });
@@ -37,8 +30,6 @@ document.addEventListener('astro:page-load', () => {
     sections.forEach(section => {
       observer.observe(section);
     });
-  } else {
-    console.error('No sections found.');
   }
 
   navLinks.forEach(anchor => {

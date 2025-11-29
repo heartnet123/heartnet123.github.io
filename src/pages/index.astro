@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import Skill from "../components/Skill.astro";
+import { Image } from "astro:assets";
+import profileImage from "../assets/profile.jpg";
 ---
 
 <Layout>
@@ -15,10 +17,7 @@ import Skill from "../components/Skill.astro";
     >
       {/* Background Pattern */}
       <div class="absolute inset-0 opacity-[0.03]">
-        <div
-          class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"
-        >
-        </div>
+        <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
       </div>
 
       <div class="container mx-auto px-6 z-10 relative">
@@ -137,8 +136,8 @@ import Skill from "../components/Skill.astro";
             <div
               class="relative w-80 h-[28rem] lg:w-96 lg:h-[32rem] rounded-2xl overflow-hidden shadow-2xl border border-white/10 transition-all duration-500"
             >
-              <img
-                src="https://i.pinimg.com/736x/32/8f/a4/328fa4b617beebee4a272b9f4c4f0965.jpg"
+              <Image
+                src={profileImage}
                 alt="Developer Workspace"
                 class="w-full h-full object-cover"
               />
