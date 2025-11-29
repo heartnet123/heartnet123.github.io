@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('astro:page-load', () => {
   console.log('Scroll tracker script loaded.');
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.tabs a.tab[href^="#"]');
