@@ -158,10 +158,16 @@ import profileImage from "../assets/profile.jpg";
         {/* Section Header */}
         <div class="mb-12 flex items-end justify-between">
           <div>
-            <h2 class="text-4xl lg:text-5xl font-bold text-white mb-2">
+            <h2
+              class="text-4xl lg:text-5xl font-bold text-white mb-2 reveal reveal-left"
+            >
               Featured <span class="text-green-500">Work</span>
             </h2>
-            <div class="h-1.5 w-20 bg-green-500 rounded-full"></div>
+            <div
+              class="h-1.5 w-20 bg-green-500 rounded-full reveal reveal-left"
+              data-delay="100"
+            >
+            </div>
           </div>
           <a
             href="/projects"
@@ -193,14 +199,14 @@ import profileImage from "../assets/profile.jpg";
             skill1="Next.js"
             skill2="Django"
             github="https://github.com/heartnet123/ecommerce-nextmart"
-            image="/projects/nextmart.png"
+            image="/projects/nextmart1.png"
           />
           <Card
             name="BookCube"
             desc="A platform for managing and discovering books, built with Django and PostgreSQL."
             skill1="Django"
             github="https://github.com/heartnet123/BookCube"
-            image="/projects/bookcube.png"
+            image="/projects/bookcube1.png"
           />
           <Card
             name="Inventory Management"
@@ -221,22 +227,28 @@ import profileImage from "../assets/profile.jpg";
         <div class="mb-16">
           <div class="flex items-end justify-between mb-2">
             <h2
-              class="text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase"
+              class="text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase reveal reveal-left"
             >
               SKILL
             </h2>
-            <div class="text-right text-xs font-mono text-gray-500 uppercase">
+            <div
+              class="text-right text-xs font-mono text-gray-500 uppercase reveal reveal-right"
+            >
               <div>SKILL: OPTIMIZED</div>
             </div>
           </div>
-          <div class="h-1 w-32 bg-green-500"></div>
+          <div
+            class="h-1 w-32 bg-green-500 reveal reveal-left"
+            data-delay="100"
+          >
+          </div>
         </div>
 
         {/* Skills Grid */}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Frontend Arsenal */}
           <div
-            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300"
+            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 reveal reveal-up"
           >
             <div class="flex items-start gap-4 mb-6">
               <div class="p-3 border border-green-500/30 bg-green-500/5">
@@ -314,7 +326,7 @@ import profileImage from "../assets/profile.jpg";
 
           {/* Backend Systems */}
           <div
-            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300"
+            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 reveal reveal-up"
           >
             <div class="flex items-start gap-4 mb-6">
               <div class="p-3 border border-green-500/30 bg-green-500/5">
@@ -388,7 +400,7 @@ import profileImage from "../assets/profile.jpg";
 
           {/* Command Tools */}
           <div
-            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300"
+            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 reveal reveal-up"
           >
             <div class="flex items-start gap-4 mb-6">
               <div class="p-3 border border-green-500/30 bg-green-500/5">
@@ -556,26 +568,5 @@ import profileImage from "../assets/profile.jpg";
     </section>
   </main>
 
-  <script>
-    document.addEventListener("astro:page-load", () => {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = "1";
-            observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
-
-      const elementsToObserve = document.querySelectorAll(".animate-on-load");
-      elementsToObserve.forEach((element) => {
-        observer.observe(element);
-      });
-    });
-  </script>
+  <script src="../assets/scroll-reveal.js"></script>
 </Layout>
