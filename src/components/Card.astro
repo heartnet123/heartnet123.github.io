@@ -9,16 +9,25 @@ export interface Props {
   skill3?: string;
   github?: string;
   image?: string;
+  /** When provided the card links to /projects/[slug] instead of directly to github */
+  slug?: string;
 }
 
-const { name, desc, skill1, skill2, skill3, github, image } = Astro.props;
+const { name, desc, skill1, skill2, skill3, github, image, slug } = Astro.props;
 
 const skills = [skill1, skill2, skill3].filter((skill) => skill);
+const href = slug ? `/projects/${slug}` : github;
+const isExternal = !slug;
 ---
 
-<a href={github} target="_blank" class="block group">
+<a
+  href={href}
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noopener noreferrer" : undefined}
+  class="block group"
+>
   <div
-    class="bg-[#111] rounded-2xl overflow-hidden border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-1 reveal reveal-up"
+    class="bg-[#111] rounded-2xl overflow-hidden border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-1 gsap-reveal gsap-up"
   >
     {/* Image Container */}
     <div class="relative h-48 overflow-hidden">
@@ -61,6 +70,16 @@ const skills = [skill1, skill2, skill3].filter((skill) => skill);
           </div>
         )
       }
+
+      {/* View details indicator */}
+      {slug && (
+        <div class="flex items-center gap-1 text-xs text-green-500/70 group-hover:text-green-400 transition-colors pt-1">
+          <span>View details</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </div>
+      )}
     </div>
   </div>
 </a>

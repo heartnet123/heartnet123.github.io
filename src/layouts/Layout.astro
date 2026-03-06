@@ -3,6 +3,18 @@ import "../assets/app.css";
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import { ClientRouter } from "astro:transitions";
+
+export interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "JJ Portfolio",
+	description = "Full-stack developer portfolio — building modern web and desktop applications.",
+} = Astro.props;
+
+const siteUrl = "https://heartnet123.github.io";
 ---
 
 <!doctype html>
@@ -12,7 +24,17 @@ import { ClientRouter } from "astro:transitions";
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>JJ Portfolio</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<!-- Open Graph -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="JJ Portfolio" />
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
 		<ClientRouter />
 	</head>
 	<body>
@@ -42,6 +64,63 @@ import { ClientRouter } from "astro:transitions";
 			<Footer />
 		</div>
 		<script src="../assets/scroll-tracker.js"></script>
+		<script>
+			import Lenis from "lenis";
+			import { gsap } from "gsap";
+			import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+			gsap.registerPlugin(ScrollTrigger);
+
+			let lenis: any;
+
+			function initLenis() {
+				if (lenis) {
+					lenis.destroy();
+				}
+				lenis = new Lenis();
+
+				lenis.on("scroll", ScrollTrigger.update);
+
+				gsap.ticker.add((time) => {
+					lenis.raf(time * 1000);
+				});
+
+				gsap.ticker.lagSmoothing(0);
+				(window as any).lenis = lenis; // Expose globally for things like scroll tracker
+			}
+
+			function initScrollReveals() {
+				gsap.utils.toArray(".gsap-reveal").forEach((elem: any) => {
+					let x = 0,
+						y = 50;
+					if (elem.classList.contains("gsap-left"))
+						((x = -50), (y = 0));
+					if (elem.classList.contains("gsap-right"))
+						((x = 50), (y = 0));
+					if (elem.classList.contains("gsap-up")) ((x = 0), (y = 50));
+					if (elem.classList.contains("gsap-down"))
+						((x = 0), (y = -50));
+
+					gsap.from(elem, {
+						scrollTrigger: {
+							trigger: elem,
+							start: "top 85%",
+						},
+						x: x,
+						y: y,
+						opacity: 0,
+						duration: 0.8,
+						ease: "power3.out",
+					});
+				});
+			}
+
+			document.addEventListener("astro:page-load", () => {
+				initLenis();
+				initScrollReveals();
+				ScrollTrigger.refresh();
+			});
+		</script>
 	</body>
 </html>
 

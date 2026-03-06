@@ -1,0 +1,349 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { getReadingTime, formatReadingTime } from "../../lib/readingTime";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    // Sort by date descending for prev/next navigation
+    const sorted = posts.sort(
+        (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+    );
+
+    return sorted.map((post, index) => ({
+        params: { slug: post.slug },
+        props: {
+            post,
+            prev: sorted[index + 1] ?? null, // older post
+            next: sorted[index - 1] ?? null, // newer post
+        },
+    }));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content } = await post.render();
+
+const readingTime = getReadingTime(post.body ?? "");
+
+const formattedDate = post.data.date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+});
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+    <div class="min-h-screen bg-base-200 pt-24 px-6 pb-16">
+        <div class="container mx-auto max-w-3xl">
+            <!-- Back link -->
+            <a
+                href="/blog"
+                class="inline-flex items-center gap-2 text-sm text-base-content/50 hover:text-primary transition-colors mb-8 group"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4 group-hover:-translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Blog
+            </a>
+
+            <!-- Article header -->
+            <header class="mb-10">
+                <div class="flex flex-wrap gap-2 mb-4">
+                    {
+                        post.data.tags.map((tag) => (
+                            <span class="badge badge-accent badge-outline text-xs">
+                                {tag}
+                            </span>
+                        ))
+                    }
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-bold text-primary leading-tight mb-4">
+                    {post.data.title}
+                </h1>
+
+                <p class="text-lg text-base-content/70 mb-6 leading-relaxed">
+                    {post.data.description}
+                </p>
+
+                <div
+                    class="flex items-center gap-4 text-sm text-base-content/50 pb-8 border-b border-base-300"
+                >
+                    <time datetime={post.data.date.toISOString()}>
+                        {formattedDate}
+                    </time>
+                    <span>·</span>
+                    <span>{formatReadingTime(readingTime)}</span>
+                </div>
+            </header>
+
+            <!-- Post content -->
+            <article class="post-content">
+                <Content />
+            </article>
+
+            <!-- Post footer: tags -->
+            <div class="mt-12 pt-8 border-t border-base-300">
+                <p class="text-sm text-base-content/50 mb-3">Tagged in:</p>
+                <div class="flex flex-wrap gap-2">
+                    {
+                        post.data.tags.map((tag) => (
+                            <span class="badge badge-outline badge-accent">
+                                {tag}
+                            </span>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <!-- Prev / Next navigation -->
+            {
+                (prev || next) && (
+                    <nav
+                        class="mt-12 grid gap-4"
+                        style={prev && next ? "grid-template-columns: 1fr 1fr" : "grid-template-columns: 1fr"}
+                    >
+                        {prev && (
+                            <a
+                                href={`/blog/${prev.slug}`}
+                                class="card bg-base-100 border border-base-300 hover:border-primary transition-colors p-4 group"
+                            >
+                                <p class="text-xs text-base-content/40 mb-1 flex items-center gap-1">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="w-3 h-3"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 19l-7-7 7-7"
+                                        />
+                                    </svg>
+                                    Older post
+                                </p>
+                                <p class="text-sm font-medium text-base-content group-hover:text-primary transition-colors line-clamp-2">
+                                    {prev.data.title}
+                                </p>
+                            </a>
+                        )}
+                        {next && (
+                            <a
+                                href={`/blog/${next.slug}`}
+                                class="card bg-base-100 border border-base-300 hover:border-primary transition-colors p-4 group text-right ml-auto w-full"
+                            >
+                                <p class="text-xs text-base-content/40 mb-1 flex items-center justify-end gap-1">
+                                    Newer post
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="w-3 h-3"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M9 5l7 7-7 7"
+                                        />
+                                    </svg>
+                                </p>
+                                <p class="text-sm font-medium text-base-content group-hover:text-primary transition-colors line-clamp-2">
+                                    {next.data.title}
+                                </p>
+                            </a>
+                        )}
+                    </nav>
+                )
+            }
+        </div>
+    </div>
+</Layout>
+
+<style is:global>
+    /* ─── Post prose styles ─── */
+    .post-content {
+        color: oklch(83.768% 0.001 17.911); /* base-content */
+        font-size: 1.0625rem;
+        line-height: 1.8;
+    }
+
+    .post-content > * + * {
+        margin-top: 1.5em;
+    }
+
+    /* Headings */
+    .post-content h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: oklch(69.776% 0.135 168.327); /* secondary */
+        margin-top: 2.5em;
+        margin-bottom: 0.75em;
+        padding-bottom: 0.4em;
+        border-bottom: 1px solid oklch(16.203% 0.007 17.911); /* base-300 */
+    }
+
+    .post-content h3 {
+        font-size: 1.375rem;
+        font-weight: 600;
+        color: oklch(70.628% 0.119 185.713); /* accent */
+        margin-top: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    .post-content h4 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: oklch(83.768% 0.001 17.911);
+        margin-top: 1.75em;
+        margin-bottom: 0.5em;
+    }
+
+    /* Paragraphs */
+    .post-content p {
+        margin-bottom: 1.25em;
+        color: oklch(75% 0.001 17.911);
+    }
+
+    /* Bold */
+    .post-content strong {
+        color: oklch(83.768% 0.001 17.911);
+        font-weight: 600;
+    }
+
+    /* Links */
+    .post-content a {
+        color: oklch(68.628% 0.185 148.958); /* primary */
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 0.15s;
+    }
+
+    .post-content a:hover {
+        color: oklch(78% 0.185 148.958);
+    }
+
+    /* Lists */
+    .post-content ul,
+    .post-content ol {
+        padding-left: 1.75em;
+        margin-bottom: 1.25em;
+    }
+
+    .post-content ul {
+        list-style-type: disc;
+    }
+
+    .post-content ol {
+        list-style-type: decimal;
+    }
+
+    .post-content li {
+        margin-bottom: 0.4em;
+        color: oklch(75% 0.001 17.911);
+    }
+
+    .post-content li > ul,
+    .post-content li > ol {
+        margin-top: 0.4em;
+        margin-bottom: 0;
+    }
+
+    /* Blockquotes */
+    .post-content blockquote {
+        border-left: 4px solid oklch(68.628% 0.185 148.958);
+        padding-left: 1.25em;
+        margin: 1.5em 0;
+        color: oklch(65% 0.001 17.911);
+        font-style: italic;
+    }
+
+    /* Inline code */
+    .post-content :not(pre) > code {
+        background-color: oklch(16.203% 0.007 17.911);
+        color: oklch(70.628% 0.119 185.713); /* accent */
+        padding: 0.15em 0.45em;
+        border-radius: 0.25rem;
+        font-size: 0.875em;
+        font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+    }
+
+    /* Code blocks (Shiki-generated) */
+    .post-content pre {
+        background-color: oklch(13% 0.005 17.911) !important;
+        border: 1px solid oklch(22% 0.008 17.911);
+        border-radius: 0.5rem;
+        padding: 1.25em 1.5em;
+        overflow-x: auto;
+        margin: 1.75em 0;
+        font-size: 0.875rem;
+        line-height: 1.7;
+    }
+
+    .post-content pre code {
+        background: none;
+        padding: 0;
+        font-size: inherit;
+        color: inherit;
+        border-radius: 0;
+        font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+    }
+
+    /* Tables */
+    .post-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.75em 0;
+        font-size: 0.9rem;
+    }
+
+    .post-content thead tr {
+        border-bottom: 2px solid oklch(22% 0.008 17.911);
+    }
+
+    .post-content th {
+        text-align: left;
+        font-weight: 600;
+        color: oklch(68.628% 0.185 148.958);
+        padding: 0.6em 1em;
+    }
+
+    .post-content td {
+        padding: 0.6em 1em;
+        border-bottom: 1px solid oklch(16.203% 0.007 17.911);
+        color: oklch(75% 0.001 17.911);
+    }
+
+    .post-content tbody tr:hover {
+        background-color: oklch(16.203% 0.007 17.911);
+    }
+
+    /* Horizontal rule */
+    .post-content hr {
+        border: none;
+        border-top: 1px solid oklch(22% 0.008 17.911);
+        margin: 2.5em 0;
+    }
+
+    /* Images */
+    .post-content img {
+        max-width: 100%;
+        border-radius: 0.5rem;
+        margin: 1.5em auto;
+        display: block;
+    }
+</style>

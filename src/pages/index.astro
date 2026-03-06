@@ -4,6 +4,9 @@ import Card from "../components/Card.astro";
 import Skill from "../components/Skill.astro";
 import { Image } from "astro:assets";
 import profileImage from "../assets/profile.jpg";
+import { projects } from "../data/projects";
+
+const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
 ---
 
 <Layout>
@@ -28,7 +31,7 @@ import profileImage from "../assets/profile.jpg";
           <div class="flex-1 text-left space-y-8">
             {/* Status Badge */}
             <div
-              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 animate-on-load animate-fadeInUp delay-100"
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 hero-status"
             >
               <span class="relative flex h-2 w-2">
                 <span
@@ -47,28 +50,24 @@ import profileImage from "../assets/profile.jpg";
             {/* Main Heading */}
             <div class="space-y-2">
               <h1
-                class="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-white animate-on-load animate-fadeInUp delay-200"
+                class="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-white hero-title-1"
               >
                 Full Stack
               </h1>
               <h1
-                class="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-green-500 animate-on-load animate-fadeInUp delay-300"
+                class="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-green-500 hero-title-2"
               >
                 Developer
               </h1>
             </div>
 
             {/* Description */}
-            <p
-              class="text-lg text-gray-400 max-w-xl leading-relaxed animate-on-load animate-fadeInUp delay-400"
-            >
+            <p class="text-lg text-gray-400 max-w-xl leading-relaxed hero-desc">
               I'm Fullstack Developer building modern web applications.
             </p>
 
             {/* Buttons */}
-            <div
-              class="flex flex-wrap gap-4 animate-on-load animate-fadeInUp delay-500"
-            >
+            <div class="flex flex-wrap gap-4 hero-buttons">
               <a
                 href="#project"
                 class="btn bg-green-500 hover:bg-green-600 text-black border-none rounded-lg px-8 py-3 font-medium capitalize flex items-center gap-2 group"
@@ -89,6 +88,30 @@ import profileImage from "../assets/profile.jpg";
                 </svg>
               </a>
               <a
+                href="/resume.pdf"
+                download="resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-outline border-green-500/40 text-green-400 hover:bg-green-500/10 hover:border-green-500/60 rounded-lg px-8 py-3 font-medium capitalize flex items-center gap-2 group"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 transition-transform group-hover:translate-y-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="12" y1="12" x2="12" y2="18"></line>
+                  <polyline points="9 15 12 18 15 15"></polyline>
+                </svg>
+                Download Resume
+              </a>
+              <a
                 href="#contact"
                 class="btn btn-outline border-white/20 text-white hover:bg-white/10 hover:border-white/30 rounded-lg px-8 py-3 font-medium capitalize"
               >
@@ -99,11 +122,11 @@ import profileImage from "../assets/profile.jpg";
 
           {/* Image Section */}
           <div
-            class="flex-1 flex justify-center lg:justify-end animate-on-load animate-fadeInRight delay-400 relative"
+            class="flex-1 flex justify-center lg:justify-end hero-image-container relative"
           >
             {/* Code Card Overlay */}
             <div
-              class="hidden sm:block absolute -bottom-10 -left-10 z-20 bg-[#1a1a1a]/90 backdrop-blur-xl p-4 rounded-xl border border-white/10 shadow-2xl max-w-xs transform -rotate-3 hover:rotate-0 transition-transform duration-300"
+              class="hidden sm:block absolute -bottom-10 -left-10 z-20 bg-[#1a1a1a]/90 backdrop-blur-xl p-4 rounded-xl border border-white/10 shadow-2xl max-w-xs transform -rotate-3 hover:rotate-0 transition-transform duration-300 hero-code-card"
             >
               <div class="flex gap-1.5 mb-3">
                 <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
@@ -159,13 +182,12 @@ import profileImage from "../assets/profile.jpg";
         <div class="mb-12 flex items-end justify-between">
           <div>
             <h2
-              class="text-4xl lg:text-5xl font-bold text-white mb-2 reveal reveal-left"
+              class="text-4xl lg:text-5xl font-bold text-white mb-2 gsap-reveal gsap-left"
             >
               Featured <span class="text-green-500">Work</span>
             </h2>
             <div
-              class="h-1.5 w-20 bg-green-500 rounded-full reveal reveal-left"
-              data-delay="100"
+              class="h-1.5 w-20 bg-green-500 rounded-full gsap-reveal gsap-left"
             >
             </div>
           </div>
@@ -193,29 +215,18 @@ import profileImage from "../assets/profile.jpg";
         <div
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
         >
-          <Card
-            name="NextMart"
-            desc="E-Commerce platform built with Next.js and Django, featuring modern UI and JWT authentication method."
-            skill1="Next.js"
-            skill2="Django"
-            github="https://github.com/heartnet123/ecommerce-nextmart"
-            image="/projects/nextmart1.png"
-          />
-          <Card
-            name="BookCube"
-            desc="A platform for managing and discovering books, built with Django and PostgreSQL."
-            skill1="Django"
-            github="https://github.com/heartnet123/BookCube"
-            image="/projects/bookcube1.png"
-          />
-          <Card
-            name="Inventory Management"
-            desc="An application to manage kitchen inventory, built with Tauri, SvelteKit, and SQLite."
-            skill1="Tauri"
-            skill2="SvelteKit"
-            github="https://github.com/heartnet123/kitcheninventory"
-            image="/projects/kitchen.png"
-          />
+          {featuredProjects.map((project) => (
+            <Card
+              name={project.name}
+              desc={project.tagline}
+              skill1={project.skills[0]}
+              skill2={project.skills[1]}
+              skill3={project.skills[2]}
+              github={project.github}
+              image={project.heroImage}
+              slug={project.slug}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -227,28 +238,24 @@ import profileImage from "../assets/profile.jpg";
         <div class="mb-16">
           <div class="flex items-end justify-between mb-2">
             <h2
-              class="text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase reveal reveal-left"
+              class="text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase gsap-reveal gsap-left"
             >
               SKILL
             </h2>
             <div
-              class="text-right text-xs font-mono text-gray-500 uppercase reveal reveal-right"
+              class="text-right text-xs font-mono text-gray-500 uppercase gsap-reveal gsap-right"
             >
               <div>SKILL: OPTIMIZED</div>
             </div>
           </div>
-          <div
-            class="h-1 w-32 bg-green-500 reveal reveal-left"
-            data-delay="100"
-          >
-          </div>
+          <div class="h-1 w-32 bg-green-500 gsap-reveal gsap-left"></div>
         </div>
 
         {/* Skills Grid */}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Frontend Arsenal */}
           <div
-            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 reveal reveal-up"
+            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 gsap-reveal gsap-up"
           >
             <div class="flex items-start gap-4 mb-6">
               <div class="p-3 border border-green-500/30 bg-green-500/5">
@@ -326,7 +333,7 @@ import profileImage from "../assets/profile.jpg";
 
           {/* Backend Systems */}
           <div
-            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 reveal reveal-up"
+            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 gsap-reveal gsap-up"
           >
             <div class="flex items-start gap-4 mb-6">
               <div class="p-3 border border-green-500/30 bg-green-500/5">
@@ -400,7 +407,7 @@ import profileImage from "../assets/profile.jpg";
 
           {/* Command Tools */}
           <div
-            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 reveal reveal-up"
+            class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 gsap-reveal gsap-up"
           >
             <div class="flex items-start gap-4 mb-6">
               <div class="p-3 border border-green-500/30 bg-green-500/5">
@@ -568,5 +575,58 @@ import profileImage from "../assets/profile.jpg";
     </section>
   </main>
 
-  <script src="../assets/scroll-reveal.js"></script>
+  <script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    document.addEventListener("astro:page-load", () => {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero animations
+      const tl = gsap.timeline();
+      tl.from(".hero-status", {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power3.out",
+      })
+        .from(
+          ".hero-title-1",
+          { y: 40, opacity: 0, duration: 0.8, ease: "power3.out" },
+          "-=0.4",
+        )
+        .from(
+          ".hero-title-2",
+          { y: 40, opacity: 0, duration: 0.8, ease: "power3.out" },
+          "-=0.6",
+        )
+        .from(
+          ".hero-desc",
+          { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" },
+          "-=0.6",
+        )
+        .from(
+          ".hero-buttons",
+          { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" },
+          "-=0.4",
+        )
+        .from(
+          ".hero-image-container",
+          { x: 40, opacity: 0, duration: 0.8, ease: "power3.out" },
+          "-=0.8",
+        )
+        .from(
+          ".hero-code-card",
+          {
+            x: -20,
+            y: 20,
+            opacity: 0,
+            rotation: -10,
+            duration: 0.8,
+            ease: "back.out(1.7)",
+          },
+          "-=0.6",
+        );
+    });
+  </script>
 </Layout>
