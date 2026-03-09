@@ -1,3 +1,13 @@
+---
+const pathname = Astro.url.pathname;
+const isActive = (path: string) => {
+    if (path === "/") {
+        return pathname === "/";
+    }
+    return pathname.startsWith(path);
+};
+---
+
 <aside
     id="sidebar"
     class="fixed left-0 top-0 h-full w-64 lg:w-20 bg-[#0a0a0a] border-r border-white/5 flex flex-col items-center py-8 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-300"
@@ -26,7 +36,11 @@
     {/* Logo/Home */}
     <a
         href="/"
-        class="mb-12 p-3 rounded-xl bg-primary/10 text-primary hover:scale-110 transition-transform"
+        class:list={[
+            "mb-12 p-3 rounded-xl transition-all hover:scale-110",
+            isActive("/") ? "bg-primary/10 text-primary" : "text-gray-400 hover:text-white"
+        ]}
+        aria-current={isActive("/") ? "page" : undefined}
     >
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,8 +61,12 @@
     <nav class="flex-1 flex flex-col gap-8 w-full px-4 items-center">
         <a
             href="/about"
-            class="group relative flex justify-center p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all w-full lg:w-auto"
+            class:list={[
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                isActive("/about") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
+            ]}
             aria-label="About"
+            aria-current={isActive("/about") ? "page" : undefined}
         >
             <div class="flex items-center gap-4 lg:justify-center">
                 <svg
@@ -74,8 +92,12 @@
 
         <a
             href="/projects"
-            class="group relative flex justify-center p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all w-full lg:w-auto"
+            class:list={[
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                isActive("/projects") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
+            ]}
             aria-label="Projects"
+            aria-current={isActive("/projects") ? "page" : undefined}
         >
             <div class="flex items-center gap-4 lg:justify-center">
                 <svg
@@ -102,8 +124,12 @@
 
         <a
             href="/work"
-            class="group relative flex justify-center p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all w-full lg:w-auto"
+            class:list={[
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                isActive("/work") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
+            ]}
             aria-label="Work"
+            aria-current={isActive("/work") ? "page" : undefined}
         >
             <div class="flex items-center gap-4 lg:justify-center">
                 <svg
@@ -131,8 +157,12 @@
 
         <a
             href="/blog"
-            class="group relative flex justify-center p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all w-full lg:w-auto"
+            class:list={[
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                isActive("/blog") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
+            ]}
             aria-label="Blog"
+            aria-current={isActive("/blog") ? "page" : undefined}
         >
             <div class="flex items-center gap-4 lg:justify-center">
                 <svg
@@ -196,8 +226,9 @@
 
     {/* Bottom/Contact */}
     <a
-        href="#contact"
+        href="/#contact"
         class="mb-4 p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all w-full lg:w-auto flex justify-center"
+        aria-label="Contact"
     >
         <div class="flex items-center gap-4 lg:justify-center">
             <svg
