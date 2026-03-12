@@ -1,0 +1,3 @@
+## 2025-05-15 - [A11y & Semantic HTML Refactoring]
+**Learning:** Consolidating the `<main>` landmark into a single global layout wrapper while providing a "Skip to content" link significantly improves accessibility for keyboard and screen reader users. However, this refactor requires ensuring all individual pages are updated to remove nested `<main>` tags to maintain a valid document structure.
+**Action:** When modifying a global layout's landmark structure, always grep for existing landmark tags (like `<main>`, `<nav>`, `<aside>`) across the entire `src/pages` directory to avoid invalid nesting and ensure consistency.
