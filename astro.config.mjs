@@ -6,6 +6,11 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
     integrations: [react()],
+    image: {
+        service: {
+            entrypoint: 'astro/assets/services/noop'
+        }
+    },
     markdown: {
         shikiConfig: {
             theme: 'github-dark',
