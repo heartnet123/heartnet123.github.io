@@ -1,0 +1,3 @@
+## 2025-05-14 - Skip to Content & Tooltip Accessibility
+**Learning:** A standard accessibility requirement for many projects is a 'Skip to Content' link as the first focusable element, targeting a centralized `<main id="main-content">`. Additionally, icon-only navigation tooltips must be accessible via keyboard focus, not just hover, to ensure parity for keyboard users.
+**Action:** Always implement a hidden-until-focused 'Skip to content' link targeting `<main id="main-content">`. Centralize the `<main>` tag in the layout and remove it from individual pages to avoid nested landmarks. Use `group-focus-visible` for tooltips on interactive elements.
