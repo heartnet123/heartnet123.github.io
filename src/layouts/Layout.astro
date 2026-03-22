@@ -38,6 +38,13 @@ const siteUrl = "https://heartnet123.github.io";
 		<ClientRouter />
 	</head>
 	<body>
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-bold focus:shadow-2xl focus:ring-2 focus:ring-white focus:outline-none transition-all"
+		>
+			Skip to content
+		</a>
+
 		<button
 			id="sidebar-toggle"
 			class="lg:hidden fixed top-4 left-4 z-[60] p-2 bg-[#0a0a0a] border border-white/10 rounded-lg text-gray-400 hover:text-white"
@@ -59,8 +66,10 @@ const siteUrl = "https://heartnet123.github.io";
 		</button>
 
 		<Sidebar />
-		<div class="lg:ml-20">
+		<main id="main-content" class="lg:ml-20 min-h-screen">
 			<slot />
+		</main>
+		<div class="lg:ml-20">
 			<Footer />
 		</div>
 		<script src="../assets/scroll-tracker.js"></script>
