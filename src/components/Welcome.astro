@@ -6,7 +6,7 @@ import "../assets/app.css";
 
 <div id="container">
 	<img id="background" src={background.src} alt="" fetchpriority="high" />
-	<main>
+	<div>
 		<section id="hero">
 			<a href="https://astro.build"
 				><img src={astroLogo.src} width="115" height="48" alt="Astro Homepage" /></a
@@ -16,7 +16,7 @@ import "../assets/app.css";
 			</h1>
 
 		</section>
-	</main>
+	</div>
 </div>
 
 <style>
@@ -35,7 +35,7 @@ import "../assets/app.css";
 		height: 100%;
 	}
 
-	main {
+	#container > div {
 		height: 100%;
 		display: flex;
 		justify-content: center;
