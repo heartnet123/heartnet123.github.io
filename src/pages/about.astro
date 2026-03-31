@@ -32,11 +32,11 @@ const philosophy = [
 
 const education = [
   {
-    degree: "Bachelor of Engineering — Computer Engineering",
-    institution: "King Mongkut's University of Technology Thonburi (KMUTT)",
+    degree: "Bachelor of Science — Information Technology",
+    institution: "King Mongkut's Institute of Technology Ladkrabang (KMITL)",
     period: "2021 – Present",
     detail:
-      "Coursework: Data Structures & Algorithms, Operating Systems, Computer Networks, Database Systems, Software Engineering, Machine Learning Fundamentals.",
+      "Coursework: Data Structures & Algorithms, Operating Systems, Computer Networks, Database Systems, Software Engineering, Web Development Fundamentals.",
   },
 ];
 
@@ -61,9 +61,10 @@ const interests = [
   { label: "MECHANICAL KEYBOARDS", icon: "◈" },
   { label: "PIXEL ART", icon: "◈" },
   { label: "SYSTEM DESIGN", icon: "◈" },
-  { label: "LINUX RICING", icon: "◈" },
+  { label: "LINUX", icon: "◈" },
   { label: "GAME DEV", icon: "◈" },
-  { label: "COFFEE BREWING", icon: "◈" },
+  { label: "COFFEE BREWING", icon: "◈" },  
+  { label: "AI", icon: "◈" },
 ];
 ---
 
@@ -71,13 +72,13 @@ const interests = [
   title="About — JJ Portfolio"
   description="Learn about Earth, a full-stack developer — his background, technical philosophy, education, certifications, and what drives him to build."
 >
-  <main class="min-h-screen bg-[#0a0a0a]">
+  <main class="min-h-screen bg-base-100">
     {/* ─── HERO ──────────────────────────────────────────────── */}
-    <section class="relative min-h-[60vh] flex items-center bg-[#0a0a0a] pt-24 pb-16 overflow-hidden">
+    <section class="relative min-h-[60vh] flex items-center bg-base-100 pt-24 pb-16 overflow-hidden">
       {/* Subtle grid background */}
       <div
         class="absolute inset-0 opacity-[0.03]"
-        style="background-image: linear-gradient(#4ade80 1px, transparent 1px), linear-gradient(90deg, #4ade80 1px, transparent 1px); background-size: 40px 40px;"
+        style="background-image: linear-gradient(var(--color-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary) 1px, transparent 1px); background-size: 40px 40px;"
       ></div>
 
       <div class="container mx-auto px-6 z-10 relative">
@@ -90,19 +91,22 @@ const interests = [
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight about-title">
               Hey, I'm <span class="text-green-500">Earth</span>
             </h1>
-            <p class="text-xl text-gray-400 max-w-xl leading-relaxed about-desc">
+            <p class="text-xl text-gray-300 max-w-xl leading-relaxed about-desc">
               A full-stack developer who loves crafting clean, performant web
               experiences — from pixel-perfect UIs to battle-tested backend
               systems. Based in Bangkok, currently open to new opportunities.
             </p>
             <div class="flex flex-wrap gap-3 about-badges">
-              <span class="px-3 py-1 bg-black border border-gray-700 text-green-400 text-xs font-mono">
+              <span class="px-3 py-1 bg-base-200 border border-gray-700 text-green-400 text-xs font-mono">
                 • FULL STACK
               </span>
-              <span class="px-3 py-1 bg-black border border-gray-700 text-green-400 text-xs font-mono">
+              <span class="px-3 py-1 bg-base-200 border border-gray-700 text-green-400 text-xs font-mono">
+                • AI ENGINEER
+              </span>
+              <span class="px-3 py-1 bg-base-200 border border-gray-700 text-green-400 text-xs font-mono">
                 • OPEN TO WORK
               </span>
-              <span class="px-3 py-1 bg-black border border-gray-700 text-green-400 text-xs font-mono">
+              <span class="px-3 py-1 bg-base-200 border border-gray-700 text-green-400 text-xs font-mono">
                 • BANGKOK, TH
               </span>
             </div>
@@ -124,7 +128,7 @@ const interests = [
                 rel="noopener noreferrer"
                 class="btn btn-outline border-green-500/40 text-green-400 hover:bg-green-500/10 hover:border-green-500/60 rounded-lg px-6 py-3 font-medium capitalize"
               >
-                Download CV
+                Download Resume
               </a>
             </div>
           </div>
@@ -141,13 +145,13 @@ const interests = [
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               </div>
               {/* Floating stat cards */}
-              <div class="absolute -bottom-4 -left-4 bg-[#111] border border-white/10 backdrop-blur-sm px-4 py-3 rounded-xl shadow-xl">
+              <div class="absolute -bottom-4 -left-4 bg-surface bg-black/80 border border-gray-600 px-4 py-3 rounded-xl">
                 <p class="text-2xl font-bold text-green-500">3+</p>
-                <p class="text-xs text-gray-400 font-mono uppercase">Yrs Coding</p>
+                <p class="text-xs text-gray-300 font-mono uppercase">Yrs Coding</p>
               </div>
-              <div class="absolute -top-4 -right-4 bg-[#111] border border-white/10 backdrop-blur-sm px-4 py-3 rounded-xl shadow-xl">
+              <div class="absolute -top-4 -right-4 bg-surface bg-black/80 border border-gray-600 px-4 py-3 rounded-xl">
                 <p class="text-2xl font-bold text-green-500">10+</p>
-                <p class="text-xs text-gray-400 font-mono uppercase">Projects</p>
+                <p class="text-xs text-gray-300 font-mono uppercase">Projects</p>
               </div>
             </div>
           </div>
@@ -156,7 +160,7 @@ const interests = [
     </section>
 
     {/* ─── PROFESSIONAL SUMMARY ──────────────────────────────── */}
-    <section class="py-20 bg-[#050505]">
+    <section class="py-20 bg-base-200">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -171,19 +175,19 @@ const interests = [
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
           <div class="lg:col-span-3 space-y-5 gsap-reveal gsap-up">
             <p class="text-gray-300 leading-relaxed text-lg">
-              I'm a Computer Engineering student at KMUTT with a deep passion
+              I'm an Information Technology student at KMITL with a deep passion
               for building products that are fast, accessible, and delightful to
               use. I started programming in high school — hacking together small
               games and automations — and never really stopped.
             </p>
-            <p class="text-gray-400 leading-relaxed">
+            <p class="text-gray-300 leading-relaxed">
               Today I work across the full stack, building everything from
               Next.js storefronts to Django REST APIs and containerised
               microservices. My sweet spot is the intersection of great UX and
               solid engineering: I care as much about Lighthouse scores as I do
               about database indices.
             </p>
-            <p class="text-gray-400 leading-relaxed">
+            <p class="text-gray-300 leading-relaxed">
               I'm a quick learner who is comfortable jumping into unfamiliar
               codebases and I enjoy the process of improving systems over time —
               whether that's refactoring a gnarly legacy module or introducing
@@ -193,8 +197,8 @@ const interests = [
 
           {/* Quick facts terminal card */}
           <div class="lg:col-span-2 gsap-reveal gsap-right">
-            <div class="bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden shadow-xl">
-              <div class="flex items-center gap-2 px-4 py-3 bg-[#111] border-b border-white/5">
+            <div class="bg-base-100 border border-white/10 rounded-xl overflow-hidden">
+              <div class="flex items-center gap-2 px-4 py-3 bg-surface border-b border-white/5">
                 <span class="w-3 h-3 rounded-full bg-red-500"></span>
                 <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
                 <span class="w-3 h-3 rounded-full bg-green-500"></span>
@@ -205,7 +209,7 @@ const interests = [
                 <p class="pl-4"><span class="text-red-400">name</span><span class="text-white">:</span> <span class="text-green-400">'Earth (Jaruvit)'</span><span class="text-white">,</span></p>
                 <p class="pl-4"><span class="text-red-400">role</span><span class="text-white">:</span> <span class="text-green-400">'Full Stack Developer'</span><span class="text-white">,</span></p>
                 <p class="pl-4"><span class="text-red-400">location</span><span class="text-white">:</span> <span class="text-green-400">'Bangkok, Thailand'</span><span class="text-white">,</span></p>
-                <p class="pl-4"><span class="text-red-400">education</span><span class="text-white">:</span> <span class="text-green-400">'B.Eng KMUTT'</span><span class="text-white">,</span></p>
+                <p class="pl-4"><span class="text-red-400">education</span><span class="text-white">:</span> <span class="text-green-400">'B.Sc IT KMITL'</span><span class="text-white">,</span></p>
                 <p class="pl-4"><span class="text-red-400">available</span><span class="text-white">:</span> <span class="text-orange-400">true</span><span class="text-white">,</span></p>
                 <p class="pl-4"><span class="text-red-400">matcha</span><span class="text-white">:</span> <span class="text-orange-400">true</span></p>
                 <p><span class="text-yellow-400">{"}"}</span><span class="text-white">;</span></p>
@@ -217,7 +221,7 @@ const interests = [
     </section>
 
     {/* ─── TECHNICAL PHILOSOPHY ──────────────────────────────── */}
-    <section class="py-20 bg-[#0a0a0a]">
+    <section class="py-20 bg-base-100">
       <div class="container mx-auto px-6 max-w-6xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -231,7 +235,7 @@ const interests = [
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {philosophy.map((item) => (
-            <div class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 group gsap-reveal gsap-up">
+            <div class="border border-gray-800 bg-surface p-6 hover:border-green-500/50 transition-all duration-300 group gsap-reveal gsap-up">
               <div class="flex items-start gap-4">
                 <div class="p-3 border border-green-500/30 bg-green-500/5 flex-shrink-0 group-hover:bg-green-500/10 transition-colors">
                   <svg
@@ -244,9 +248,9 @@ const interests = [
                   />
                 </div>
                 <div>
-                  <p class="text-xs font-mono text-gray-600 uppercase tracking-widest mb-1">{item.label}</p>
+                  <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">{item.label}</p>
                   <h3 class="text-lg font-bold text-white mb-2 group-hover:text-green-400 transition-colors">{item.title}</h3>
-                  <p class="text-gray-400 text-sm leading-relaxed">{item.body}</p>
+                  <p class="text-gray-300 text-sm leading-relaxed">{item.body}</p>
                 </div>
               </div>
             </div>
@@ -256,7 +260,7 @@ const interests = [
     </section>
 
     {/* ─── EDUCATION ─────────────────────────────────────────── */}
-    <section class="py-20 bg-[#050505]">
+    <section class="py-20 bg-base-200">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -270,7 +274,7 @@ const interests = [
 
         <div class="space-y-6">
           {education.map((edu) => (
-            <div class="border border-gray-800 bg-black/40 backdrop-blur-sm p-8 hover:border-green-500/30 transition-all duration-300 gsap-reveal gsap-up">
+            <div class="border border-gray-800 bg-surface p-8 hover:border-green-500/30 transition-all duration-300 gsap-reveal gsap-up">
               <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div class="flex-1">
                   <div class="flex items-center gap-3 mb-1">
@@ -278,7 +282,7 @@ const interests = [
                     <h3 class="text-xl font-bold text-white">{edu.degree}</h3>
                   </div>
                   <p class="text-green-400 font-mono text-sm mb-3 pl-5">{edu.institution}</p>
-                  <p class="text-gray-400 text-sm leading-relaxed pl-5">{edu.detail}</p>
+                  <p class="text-gray-300 text-sm leading-relaxed pl-5">{edu.detail}</p>
                 </div>
                 <div class="flex-shrink-0 sm:text-right">
                   <span class="inline-flex items-center px-3 py-1 bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-mono rounded-full">
@@ -293,7 +297,7 @@ const interests = [
     </section>
 
     {/* ─── CERTIFICATIONS ────────────────────────────────────── */}
-    <section class="py-20 bg-[#0a0a0a]">
+    <!-- <section class="py-20 bg-base-100">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -307,7 +311,7 @@ const interests = [
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {certifications.map((cert) => (
-            <div class="border border-gray-800 bg-black/40 backdrop-blur-sm p-6 hover:border-green-500/50 transition-all duration-300 flex items-center gap-5 group gsap-reveal gsap-up">
+            <div class="border border-gray-800 bg-surface p-6 hover:border-green-500/50 transition-all duration-300 flex items-center gap-5 group gsap-reveal gsap-up">
               <div class="w-14 h-14 border border-green-500/30 bg-green-500/5 flex items-center justify-center flex-shrink-0 group-hover:bg-green-500/10 transition-colors">
                 <span class="text-xs font-mono font-bold text-green-500">{cert.badge}</span>
               </div>
@@ -320,14 +324,14 @@ const interests = [
           ))}
         </div>
       </div>
-    </section>
+    </section> -->
 
     {/* ─── INTERESTS ─────────────────────────────────────────── */}
-    <section class="py-20 bg-[#050505]">
+    <section class="py-20 bg-base-200">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
-            05 / BEYOND CODE
+            04 / BEYOND CODE
           </p>
           <h2 class="text-4xl lg:text-5xl font-bold text-white mb-3 gsap-reveal gsap-left">
             Interests &amp; <span class="text-green-500">Passions</span>
@@ -336,17 +340,15 @@ const interests = [
         </div>
 
         <div class="gsap-reveal gsap-up">
-          <p class="text-gray-400 leading-relaxed mb-8 max-w-2xl">
-            When I'm not staring at a terminal, you'll find me brewing pour-over
-            coffee, customising my Neovim config (for the fourth time this
-            month), or losing a few hours to an indie game. I believe that
-            broad curiosity makes a better engineer — the best solutions often
-            come from unexpected places.
+          <p class="text-gray-300 leading-relaxed mb-8 max-w-2xl">
+            When I'm not staring at a terminal, you'll find me sipping of matcha, catching up on the latest AI breakthroughs, 
+            or losing a few hours to an indie game. I believe that broad curiosity makes a better engineer — 
+            the best solutions often come from unexpected places.
           </p>
 
           <div class="flex flex-wrap gap-3">
             {interests.map((item) => (
-              <span class="px-4 py-2 bg-black border border-gray-700 text-green-400 text-sm font-mono hover:border-green-500 hover:bg-green-500/5 transition-all duration-200 cursor-default">
+              <span class="px-4 py-2 bg-surface border border-gray-700 text-green-400 text-sm font-mono hover:border-green-500 hover:bg-green-500/5 transition-all duration-200 cursor-default">
                 {item.icon} {item.label}
               </span>
             ))}
@@ -356,14 +358,14 @@ const interests = [
     </section>
 
     {/* ─── CTA FOOTER ────────────────────────────────────────── */}
-    <section class="py-20 bg-[#0a0a0a]">
+    <section class="py-20 bg-base-100">
       <div class="container mx-auto px-6 max-w-5xl">
-        <div class="border border-green-500/30 bg-black/60 backdrop-blur-sm p-12 lg:p-16 relative gsap-reveal gsap-up">
+        <div class="border border-green-500/30 bg-surface p-12 lg:p-16 relative gsap-reveal gsap-up">
           <div class="text-center">
             <h2 class="text-4xl md:text-5xl font-bold text-white mb-4 uppercase tracking-tight">
               Let's Build Something <span class="text-green-500">Together</span>
             </h2>
-            <p class="text-gray-400 max-w-xl mx-auto mb-8 leading-relaxed">
+            <p class="text-gray-300 max-w-xl mx-auto mb-8 leading-relaxed">
               I'm always open to discussing new projects, creative ideas, or
               opportunities to be part of your vision.
             </p>

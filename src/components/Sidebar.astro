@@ -10,12 +10,12 @@ const isActive = (path: string) => {
 
 <aside
     id="sidebar"
-    class="fixed left-0 top-0 h-full w-64 lg:w-20 bg-[#0a0a0a] border-r border-white/5 flex flex-col items-center py-8 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-300"
+    class="fixed left-0 top-0 h-full w-64 lg:w-20 bg-base-100 border-r border-white/5 flex flex-col items-center py-8 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-300"
 >
     {/* Close Button (Mobile Only) */}
     <button
         id="close-sidebar"
-        class="lg:hidden absolute top-4 right-4 p-2 text-gray-400 hover:text-white"
+        class="lg:hidden absolute top-4 right-4 p-3 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
         aria-label="Close Sidebar"
     >
         <svg
@@ -196,7 +196,7 @@ const isActive = (path: string) => {
             download="resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            class="group relative flex justify-center p-3 rounded-xl hover:bg-green-500/10 text-gray-400 hover:text-green-400 transition-all w-full lg:w-auto"
+            class="group relative flex justify-center p-3 rounded-xl hover:bg-green-500/10 text-gray-300 hover:text-green-400 transition-all w-full lg:w-auto"
             aria-label="Download Resume"
         >
             <div class="flex items-center gap-4 lg:justify-center">

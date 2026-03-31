@@ -3,233 +3,229 @@
 
 /* Hero Animations */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes typewriter {
-  from {
-    width: 0;
-  }
+    from {
+        width: 0;
+    }
 
-  to {
-    width: 100%;
-  }
+    to {
+        width: 100%;
+    }
 }
 
 @keyframes blink {
-  50% {
-    border-color: transparent;
-  }
+    50% {
+        border-color: transparent;
+    }
 }
 
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
 
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 @keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
 
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* Animation Classes */
 .animate-fadeInUp {
-  animation: fadeInUp 0.8s ease-out forwards;
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .animate-fadeInLeft {
-  animation: fadeInLeft 0.8s ease-out forwards;
+    animation: fadeInLeft 0.8s ease-out forwards;
 }
 
 .animate-fadeInRight {
-  animation: fadeInRight 0.8s ease-out forwards;
+    animation: fadeInRight 0.8s ease-out forwards;
 }
 
 .animate-scaleIn {
-  animation: scaleIn 0.6s ease-out forwards;
+    animation: scaleIn 0.6s ease-out forwards;
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+    animation: float 3s ease-in-out infinite;
 }
 
 .typewriter {
-  overflow: hidden;
-  border-right: 3px solid;
-  white-space: nowrap;
-  margin: 0 auto;
-  animation: typewriter 2s steps(40, end), blink 0.75s step-end infinite;
+    overflow: hidden;
+    border-right: 3px solid;
+    white-space: nowrap;
+    margin: 0 auto;
+    animation:
+        typewriter 2s steps(40, end),
+        blink 0.75s step-end infinite;
 }
 
 /* Delay Classes */
 .delay-100 {
-  animation-delay: 0.1s;
+    animation-delay: 0.1s;
 }
 
 .delay-200 {
-  animation-delay: 0.2s;
+    animation-delay: 0.2s;
 }
 
 .delay-300 {
-  animation-delay: 0.3s;
+    animation-delay: 0.3s;
 }
 
 .delay-400 {
-  animation-delay: 0.4s;
+    animation-delay: 0.4s;
 }
 
 .delay-500 {
-  animation-delay: 0.5s;
+    animation-delay: 0.5s;
 }
 
 .delay-600 {
-  animation-delay: 0.6s;
+    animation-delay: 0.6s;
 }
 
 .delay-700 {
-  animation-delay: 0.7s;
+    animation-delay: 0.7s;
 }
 
 .delay-800 {
-  animation-delay: 0.8s;
+    animation-delay: 0.8s;
 }
 
 /* Initial hidden state */
 .animate-on-load {
-  opacity: 0;
+    opacity: 0;
 }
 
 /* Scroll Reveal Utilities */
 .reveal {
-  opacity: 0;
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
 }
 
 .reveal-up {
-  transform: translateY(30px);
+    transform: translateY(30px);
 }
 
 .reveal-down {
-  transform: translateY(-30px);
+    transform: translateY(-30px);
 }
 
 .reveal-left {
-  transform: translateX(-30px);
+    transform: translateX(-30px);
 }
 
 .reveal-right {
-  transform: translateX(30px);
+    transform: translateX(30px);
 }
 
 .reveal-scale {
-  transform: scale(0.9);
+    transform: scale(0.9);
 }
 
 .reveal.active {
-  opacity: 1;
-  transform: translate(0) scale(1);
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+    opacity: 1;
+    transform: translate(0) scale(1);
 }
 
 /* Card hover effects */
 .card:hover {
-  transform: translateY(-5px);
-  transition: transform 0.3s ease;
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
 }
 
 /* Button improvements */
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* Section spacing */
 section {
-  scroll-margin-top: 2rem;
+    scroll-margin-top: 2rem;
 }
 
 @plugin "daisyui/theme" {
-  name: "forest";
-  default: false;
-  prefersdark: false;
-  color-scheme: "dark";
-  --color-base-100: oklch(20.84% 0.008 17.911);
-  --color-base-200: oklch(18.522% 0.007 17.911);
-  --color-base-300: oklch(16.203% 0.007 17.911);
-  --color-base-content: oklch(83.768% 0.001 17.911);
-  --color-primary: oklch(68.628% 0.185 148.958);
-  --color-primary-content: oklch(0% 0 0);
-  --color-secondary: oklch(69.776% 0.135 168.327);
-  --color-secondary-content: oklch(13.955% 0.027 168.327);
-  --color-accent: oklch(70.628% 0.119 185.713);
-  --color-accent-content: oklch(14.125% 0.023 185.713);
-  --color-neutral: oklch(30.698% 0.039 171.364);
-  --color-neutral-content: oklch(86.139% 0.007 171.364);
-  --color-info: oklch(72.06% 0.191 231.6);
-  --color-info-content: oklch(0% 0 0);
-  --color-success: oklch(64.8% 0.15 160);
-  --color-success-content: oklch(0% 0 0);
-  --color-warning: oklch(84.71% 0.199 83.87);
-  --color-warning-content: oklch(0% 0 0);
-  --color-error: oklch(71.76% 0.221 22.18);
-  --color-error-content: oklch(0% 0 0);
-  --radius-selector: 2rem;
-  --radius-field: 2rem;
-  --radius-box: 0.25rem;
-  --size-selector: 0.25rem;
-  --size-field: 0.25rem;
-  --border: 1px;
-  --depth: 0;
-  --noise: 0;
+    name: "forest";
+    default: false;
+    prefersdark: false;
+    color-scheme: "dark";
+    --color-base-100: oklch(4.5% 0 0);
+    --color-base-200: oklch(2.5% 0 0);
+    --color-base-300: oklch(1.5% 0 0);
+    --color-base-content: oklch(83.768% 0.001 17.911);
+    --color-primary: oklch(68.628% 0.185 148.958);
+    --color-primary-content: oklch(0% 0 0);
+    --color-secondary: oklch(69.776% 0.135 168.327);
+    --color-secondary-content: oklch(13.955% 0.027 168.327);
+    --color-accent: oklch(70.628% 0.119 185.713);
+    --color-accent-content: oklch(14.125% 0.023 185.713);
+    --color-neutral: oklch(30.698% 0.039 171.364);
+    --color-neutral-content: oklch(86.139% 0.007 171.364);
+    --color-info: oklch(72.06% 0.191 231.6);
+    --color-info-content: oklch(0% 0 0);
+    --color-success: oklch(64.8% 0.15 160);
+    --color-success-content: oklch(0% 0 0);
+    --color-warning: oklch(84.71% 0.199 83.87);
+    --color-warning-content: oklch(0% 0 0);
+    --color-error: oklch(71.76% 0.221 22.18);
+    --color-error-content: oklch(0% 0 0);
+    --radius-selector: 2rem;
+    --radius-field: 2rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 0;
 }
