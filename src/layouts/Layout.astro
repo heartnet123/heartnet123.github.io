@@ -37,7 +37,13 @@ const siteUrl = "https://heartnet123.github.io";
 		<meta name="twitter:description" content={description} />
 		<ClientRouter />
 	</head>
-	<body>
+	<body class="bg-base-100">
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-content focus:font-bold focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50 transition-all"
+		>
+			Skip to content
+		</a>
 		<button
 			id="sidebar-toggle"
 			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -59,8 +65,10 @@ const siteUrl = "https://heartnet123.github.io";
 		</button>
 
 		<Sidebar />
-		<div class="lg:ml-20">
-			<slot />
+		<div class="lg:ml-20 flex flex-col min-h-screen">
+			<main id="main-content" tabindex="-1" class="flex-1 outline-none">
+				<slot />
+			</main>
 			<Footer />
 		</div>
 		<script src="../assets/scroll-tracker.js"></script>
