@@ -1,25 +1,32 @@
 document.addEventListener('astro:page-load', () => {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.tabs a.tab[href^="#"]');
+  const sidebarContactLink = document.getElementById('sidebar-contact-link');
 
   const observerOptions = {
     root: null,
-    rootMargin: '-64px 0px 0px 0px',
+    rootMargin: '-10% 0px -70% 0px',
     threshold: 0
   };
 
-  const observerCallback = (entries, observer) => {
-    entries.forEach(entry => {
-      const id = entry.target.getAttribute('id');
-      const navLink = document.querySelector(`.tabs a.tab[href="#${id}"]`);
-
+  const observerCallback = (entries) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.classList.remove('tab-active');
+        const id = entry.target.getAttribute("id");
+        // Update sidebar links active state
+        const sidebarLinks = document.querySelectorAll("#sidebar nav a, #sidebar-contact-link");
+        sidebarLinks.forEach((link) => {
+          const href = link.getAttribute("href");
+          if (href && (href === `#${id}` || href === `/#${id}`)) {
+            link.classList.add("bg-primary/10", "text-primary");
+            link.classList.remove("text-gray-400");
+            link.setAttribute("aria-current", "location");
+          } else if (href && (href.startsWith("#") || href.includes("/#"))) {
+            // Only remove from hash links to avoid clashing with page-based active states
+            link.classList.remove("bg-primary/10", "text-primary");
+            link.classList.add("text-gray-400");
+            link.removeAttribute("aria-current");
+          }
         });
-        if (navLink) {
-          navLink.classList.add('tab-active');
-        }
       }
     });
   };
@@ -32,12 +39,16 @@ document.addEventListener('astro:page-load', () => {
     });
   }
 
-  navLinks.forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
+  // Handle smooth scroll for hash links
+  const hashLinks = document.querySelectorAll('a[href^="/#"]');
+  hashLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      const targetId = href.split('#')[1];
+      const targetElement = document.getElementById(targetId);
+
       if (targetElement) {
+        e.preventDefault();
         if (window.lenis) {
           window.lenis.scrollTo(targetElement);
         } else {
@@ -45,6 +56,8 @@ document.addEventListener('astro:page-load', () => {
             behavior: 'smooth'
           });
         }
+        // Update URL without jump
+        window.history.pushState(null, '', href);
       }
     });
   });
