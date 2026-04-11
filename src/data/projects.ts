@@ -15,13 +15,258 @@ export interface Project {
   techStack: TechItem[];
   features: string[];
   challenges: { title: string; description: string }[];
-  github: string;
+  github?: string;
   demo?: string;
   skills: string[]; // for Card display
   featured: boolean;
 }
 
 export const projects: Project[] = [
+  {
+    slug: "jisa-ai-manga-translator",
+    name: "Jisa - AI Manga Translator",
+    tagline:
+      "End-to-end manga translation system for OCR, inpainting, and Thai typesetting.",
+    description:
+      "Jisa is an end-to-end manga translation system that uploads comic pages, detects speech bubbles, extracts text with OCR, translates it into Thai, removes the original text, and renders the translated text back into the page. The workflow combines a Python backend and a Next.js frontend to give users a local-first dashboard for uploading pages, monitoring progress, and reviewing original, cleaned, and translated results.",
+    heroImage: "/projects/jisa.svg",
+    screenshots: [
+      { src: "/projects/jisa.svg", alt: "Jisa manga translation pipeline preview" },
+    ],
+    problem:
+      "Translating manga pages manually is slow and inconsistent. A good translation is not enough on its own because the text must be extracted accurately, bubble regions cleaned up, and the translated dialogue typeset back into the page without breaking the layout or tone.",
+    solution:
+      "Jisa automates the full workflow by detecting speech bubbles, OCRing each bubble, translating with page-level context, inpainting the original text out of the image, and typesetting the Thai translation back into the bubble regions while preserving the artwork and page structure.",
+    techStack: [
+      {
+        name: "FastAPI + Uvicorn",
+        reason:
+          "Provides the Python backend HTTP API and job orchestration layer for the image processing pipeline.",
+      },
+      {
+        name: "OpenCV, NumPy, Pillow",
+        reason:
+          "Handle image manipulation, cleaning, masking, and processing tasks across the manga page workflow.",
+      },
+      {
+        name: "PyTorch + Ultralytics",
+        reason:
+          "Support the segmentation models used for bubble detection and refinement.",
+      },
+      {
+        name: "Next.js 16 + React 19",
+        reason:
+          "Drives the frontend dashboard for uploads, status tracking, and reviewing processed pages.",
+      },
+      {
+        name: "Tailwind CSS 4 + Framer Motion",
+        reason:
+          "Provide the styling and motion system for the upload and review interface.",
+      },
+      {
+        name: "Ollama + BYOK translation",
+        reason:
+          "Supports local OCR inference and OpenAI-compatible translation workflows.",
+      },
+    ],
+    features: [
+      "Drag-and-drop upload for one or many manga pages",
+      "Background job processing with live status polling",
+      "Bubble segmentation using a detection-first pipeline",
+      "OCR extraction per bubble with page-level fallback when needed",
+      "Page-context translation for more consistent dialogue",
+      "Inpainting that removes original text while preserving artwork",
+      "Bubble-aware typesetting for translated Thai text",
+      "Side-by-side review of original, cleaned, and final translated images",
+      "Progress and error reporting for each uploaded file",
+    ],
+    challenges: [
+      {
+        title: "Managing VRAM across multiple models",
+        description:
+          "Several vision models and OCR inference can run on the same machine, so the backend unloads models between stages to stay within a practical GPU budget.",
+      },
+      {
+        title: "Cleaning text without destroying artwork",
+        description:
+          "Inpainting needs a text-only mask instead of just a bubble mask, or the cleaned image loses too much of the original page structure.",
+      },
+      {
+        title: "Thai typesetting inside tight bubbles",
+        description:
+          "Naive wrapping is not enough for Thai dialogue, so the renderer uses language-aware layout logic to fit translated text back into constrained speech bubbles.",
+      },
+      {
+        title: "Coordinating OCR, translation, and fallbacks",
+        description:
+          "OCR and translation work best when they share page context, and the pipeline also needs fallback paths for missing detections, unavailable credentials, and inpainting failures.",
+      },
+    ],
+    skills: ["FastAPI", "Next.js", "PyTorch"],
+    featured: true,
+  },
+  {
+    slug: "seeu-bangkok",
+    name: "SeeU Bangkok",
+    tagline:
+      "AI-powered Bangkok trip discovery with maps, chat, saved itineraries, and multilingual planning.",
+    description:
+      "SeeU Bangkok is an AI-powered travel discovery platform for finding places, planning trips, and exploring Bangkok through an interactive map and chat experience. It combines a Next.js web app, a Hono API, Supabase, and AI agent workflows to help users discover authentic local spots instead of only the usual tourist highlights.",
+    heroImage: "/projects/seeu-bangkok.svg",
+    screenshots: [
+      { src: "/projects/seeu-bangkok.svg", alt: "SeeU Bangkok planner preview" },
+    ],
+    problem:
+      "Bangkok trip planning is often fragmented across maps, blogs, booking sites, and manual notes. That makes it difficult to answer simple questions about nearby places, budgets, routes, hidden gems, and multilingual support in one workflow.",
+    solution:
+      "SeeU Bangkok unifies discovery and planning into one flow with an interactive map, conversational AI planning, saved itineraries, Supabase-backed accounts, and streaming responses so users can discover places and build trips in real time.",
+    techStack: [
+      {
+        name: "Next.js 15 + React 19",
+        reason:
+          "Provides the web app shell for place discovery, itinerary planning, saved trips, and the user-facing experience.",
+      },
+      {
+        name: "Hono on Bun",
+        reason:
+          "Handles the backend API surface for place search, itinerary planning, and streaming AI responses.",
+      },
+      {
+        name: "Supabase",
+        reason:
+          "Stores user sessions, saved trips, and planner data while supporting authentication and persistence.",
+      },
+      {
+        name: "Mapbox GL JS",
+        reason:
+          "Drives the interactive map experience so users can discover places visually and plan around location context.",
+      },
+      {
+        name: "TypeScript",
+        reason:
+          "Keeps the monorepo contracts, API validation, and frontend state management predictable across the stack.",
+      },
+      {
+        name: "Tailwind CSS 4",
+        reason:
+          "Supports a responsive UI that stays lightweight and fast across desktop and mobile trip-planning flows.",
+      },
+    ],
+    features: [
+      "AI chat for natural-language place discovery and itinerary planning",
+      "Interactive map-based exploration with nearby suggestions and category filters",
+      "Saved trips, chat sessions, and editable itineraries for returning users",
+      "Supabase-backed authentication and user-specific planner state",
+      "Streaming AI responses over SSE for real-time planner feedback",
+      "Thai and English support for a multilingual travel experience",
+      "Admin tools for maintaining place data and content",
+    ],
+    challenges: [
+      {
+        title: "Balancing map UI responsiveness",
+        description:
+          "Map-heavy screens need to stay responsive while cleaning up Mapbox instances correctly and avoiding jank on desktop and mobile.",
+      },
+      {
+        title: "Coordinating streaming AI workflows",
+        description:
+          "The planner has to coordinate search, tool calls, and partial responses without breaking UI state or making the chat feel unstable.",
+      },
+      {
+        title: "Combining context-aware recommendations",
+        description:
+          "Useful travel recommendations need category, proximity, budget, timing, and route structure at the same time instead of simple keyword search.",
+      },
+      {
+        title: "Supporting multilingual and authenticated usage",
+        description:
+          "The product has to work smoothly for Thai and English users while still handling login, saved trips, and planner persistence cleanly.",
+      },
+    ],
+    skills: ["Next.js", "Hono", "Supabase"],
+    featured: true,
+  },
+  {
+    slug: "meguri",
+    name: "Meguri",
+    tagline: "SmartStock for recipe-based businesses and small retail",
+    description:
+      "Meguri is a smart stock and demand forecasting app for recipe-driven businesses and small retail teams. It keeps workspace, inventory, recipes, sales, suppliers, purchase planning, alerts, and forecasting in one operational system so daily work stays visible and controlled.",
+    heroImage: "/projects/meguri.svg",
+    screenshots: [
+      { src: "/projects/meguri.svg", alt: "Meguri dashboard preview" },
+    ],
+    problem:
+      "Small businesses often manage stock in spreadsheets or manual workflows. That makes stock movement hard to track, connects sales to recipes or BOMs poorly, delays purchasing, and increases the chance of stockouts or waste.",
+    solution:
+      "Meguri solves this with a workspace-scoped app built on Next.js and Convex, with real authentication, inventory CRUD, stock movement audit logs, sales tied to recipes, supplier and purchase planning, alerts, and forecasting or reorder recommendations based on live system data.",
+    techStack: [
+      {
+        name: "Next.js 15 + React 19",
+        reason:
+          "Provides the app shell and interactive UI layer for the main workspace, dashboard, inventory, forecasting, alerts, and planning pages.",
+      },
+      {
+        name: "TypeScript",
+        reason:
+          "Keeps the data model, query handlers, and UI contracts explicit across the repo, which matters for workspace-scoped business logic.",
+      },
+      {
+        name: "Convex",
+        reason:
+          "Acts as the backend, database, and realtime query layer for inventory, sales, supplier data, alerts, and forecasting snapshots.",
+      },
+      {
+        name: "Better Auth",
+        reason:
+          "Handles authentication and session management so workspace access control can be enforced reliably.",
+      },
+      {
+        name: "Tailwind CSS 4",
+        reason:
+          "Provides the styling system for the dashboard, navigation, and operational pages without adding heavy custom CSS overhead.",
+      },
+      {
+        name: "Motion, lucide-react, Iconify",
+        reason:
+          "Supply the UI motion and icon set used to keep the experience clear, modern, and easy to scan.",
+      },
+    ],
+    features: [
+      "Multi-tenant workspace model with role-based access control",
+      "Inventory management with add, edit, archive, adjustment, and movement history",
+      "Product and recipe/BOM mapping to connect finished goods with ingredients",
+      "Sales transactions that deduct stock from recipes and preserve an audit trail",
+      "Supplier management and purchase planning through reorder recommendations",
+      "Forecasting dashboard with 7, 14, and 30 day snapshots plus manual refresh",
+      "Alerts for low stock and unusual demand",
+      "Dashboard pages for inventory, products, sales, forecasting, suppliers, reports, and settings",
+    ],
+    challenges: [
+      {
+        title: "Workspace scoping and permissions",
+        description:
+          "Every query and mutation has to stay inside the correct tenant boundary so data cannot leak across workspaces or bypass role-based permissions.",
+      },
+      {
+        title: "Forecasting and recommendation quality",
+        description:
+          "The current forecasting layer uses moving averages from stock movement data, which works for the MVP but will need stronger forecasting logic over time.",
+      },
+      {
+        title: "Idempotent reorder generation",
+        description:
+          "Purchase recommendations need to be regenerated safely without creating duplicate pending records, so existing recommendations are cleared before a new run.",
+      },
+      {
+        title: "Production readiness gaps",
+        description:
+          "The roadmap still calls out work such as deployability baseline, supplier PO flow, reports and export, onboarding, and multi-location support before production hardening is complete.",
+      },
+    ],
+    skills: ["Next.js", "Convex", "TypeScript"],
+    featured: true,
+  },
   {
     slug: "nextmart",
     name: "NextMart",
