@@ -31,7 +31,10 @@ export const projects: Project[] = [
       "Jisa is an end-to-end manga translation system that uploads comic pages, detects speech bubbles, extracts text with OCR, translates it into Thai, removes the original text, and renders the translated text back into the page. The workflow combines a Python backend and a Next.js frontend to give users a local-first dashboard for uploading pages, monitoring progress, and reviewing original, cleaned, and translated results.",
     heroImage: "/projects/jisa.svg",
     screenshots: [
-      { src: "/projects/jisa.svg", alt: "Jisa manga translation pipeline preview" },
+      {
+        src: "/projects/jisa.svg",
+        alt: "Jisa manga translation pipeline preview",
+      },
     ],
     problem:
       "Translating manga pages manually is slow and inconsistent. A good translation is not enough on its own because the text must be extracted accurately, bubble regions cleaned up, and the translated dialogue typeset back into the page without breaking the layout or tone.",
@@ -114,7 +117,10 @@ export const projects: Project[] = [
       "SeeU Bangkok is an AI-powered travel discovery platform for finding places, planning trips, and exploring Bangkok through an interactive map and chat experience. It combines a Next.js web app, a Hono API, Supabase, and AI agent workflows to help users discover authentic local spots instead of only the usual tourist highlights.",
     heroImage: "/projects/seeu-bangkok.svg",
     screenshots: [
-      { src: "/projects/seeu-bangkok.svg", alt: "SeeU Bangkok planner preview" },
+      {
+        src: "/projects/seeu-bangkok.svg",
+        alt: "SeeU Bangkok planner preview",
+      },
     ],
     problem:
       "Bangkok trip planning is often fragmented across maps, blogs, booking sites, and manual notes. That makes it difficult to answer simple questions about nearby places, budgets, routes, hidden gems, and multilingual support in one workflow.",
@@ -183,7 +189,7 @@ export const projects: Project[] = [
           "The product has to work smoothly for Thai and English users while still handling login, saved trips, and planner persistence cleanly.",
       },
     ],
-    skills: ["Next.js", "Hono", "Supabase"],
+    skills: ["Next.js", "Hono", "LangGraph"],
     featured: true,
   },
   {
@@ -270,7 +276,8 @@ export const projects: Project[] = [
   {
     slug: "nextmart",
     name: "NextMart",
-    tagline: "Full-stack e-commerce platform with modern UI and JWT authentication",
+    tagline:
+      "Full-stack e-commerce platform with modern UI and JWT authentication",
     description:
       "NextMart is a production-ready e-commerce platform built with Next.js on the frontend and Django REST Framework on the backend. It features a fully functional shopping experience including product browsing, cart management, order processing, and a secure JWT-based authentication flow.",
     heroImage: "/projects/nextmart1.png",
@@ -350,7 +357,8 @@ export const projects: Project[] = [
   {
     slug: "bookcube",
     name: "BookCube",
-    tagline: "A Django-powered platform for managing and discovering your book collection",
+    tagline:
+      "A Django-powered platform for managing and discovering your book collection",
     description:
       "BookCube is a web application that lets readers catalogue their personal book collections, track reading progress, write reviews, and discover new titles. Built with Django and PostgreSQL, it emphasises clean data modelling and a distraction-free reading-log experience.",
     heroImage: "/projects/bookcube1.png",
