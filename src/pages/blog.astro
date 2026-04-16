@@ -256,8 +256,10 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
         articles.forEach(article => {
             article.addEventListener('click', (e) => {
                 // If it's a click on a link inside, let the link handle it
-                if ((e.target as HTMLElement).closest('a')) return;
-                
+                const target = e.target;
+                if (!target) return;
+                if (target instanceof Element && target.closest('a')) return;
+
                 const slug = article.getAttribute('data-post-id');
                 if (slug) {
                     window.location.href = `/blog/${slug}`;

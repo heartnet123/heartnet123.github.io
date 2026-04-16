@@ -2,6 +2,20 @@ document.addEventListener('astro:page-load', () => {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.tabs a.tab[href^="#"]');
 
+  // Cleanup: Disconnect previous observer to prevent memory leaks
+  if (window._sectionObserver) {
+    window._sectionObserver.disconnect();
+    window._sectionObserver = null;
+  }
+
+  // Cleanup: Remove previous click handlers
+  if (window._navClickHandlers) {
+    window._navClickHandlers.forEach(({ element, handler }) => {
+      element.removeEventListener('click', handler);
+    });
+    window._navClickHandlers = [];
+  }
+
   const observerOptions = {
     root: null,
     rootMargin: '-64px 0px 0px 0px',
@@ -11,7 +25,9 @@ document.addEventListener('astro:page-load', () => {
   const observerCallback = (entries, observer) => {
     entries.forEach(entry => {
       const id = entry.target.getAttribute('id');
-      const navLink = document.querySelector(`.tabs a.tab[href="#${id}"]`);
+      // Use CSS.escape to handle special characters in IDs safely
+      const safeId = CSS.escape(id);
+      const navLink = document.querySelector(`.tabs a.tab[href="#${safeId}"]`);
 
       if (entry.isIntersecting) {
         navLinks.forEach(link => {
@@ -25,6 +41,7 @@ document.addEventListener('astro:page-load', () => {
   };
 
   const observer = new IntersectionObserver(observerCallback, observerOptions);
+  window._sectionObserver = observer;
 
   if (sections.length > 0) {
     sections.forEach(section => {
@@ -32,8 +49,11 @@ document.addEventListener('astro:page-load', () => {
     });
   }
 
+  // Store handlers for cleanup
+  window._navClickHandlers = [];
+
   navLinks.forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    const clickHandler = function (e) {
       e.preventDefault();
       const targetId = this.getAttribute('href');
       const targetElement = document.querySelector(targetId);
@@ -46,6 +66,8 @@ document.addEventListener('astro:page-load', () => {
           });
         }
       }
-    });
+    };
+    anchor.addEventListener('click', clickHandler);
+    window._navClickHandlers.push({ element: anchor, handler: clickHandler });
   });
 });

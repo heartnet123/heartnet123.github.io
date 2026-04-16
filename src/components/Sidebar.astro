@@ -258,11 +258,23 @@ const isActive = (path: string) => {
 </div>
 
 <script>
+    // Type declarations for global cleanup properties
+    declare global {
+        interface Window {
+            _sidebarCleanup?: () => void;
+        }
+    }
+
     function setupSidebar() {
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("sidebar-overlay");
         const closeBtn = document.getElementById("close-sidebar");
         const toggleBtn = document.getElementById("sidebar-toggle");
+
+        // Cleanup: Remove previous event listeners to prevent accumulation
+        if (window._sidebarCleanup) {
+            window._sidebarCleanup();
+        }
 
         function openSidebar() {
             sidebar?.classList.remove("-translate-x-full");
@@ -276,19 +288,36 @@ const isActive = (path: string) => {
             document.body.style.overflow = "";
         }
 
+        // Store handlers for cleanup
+        const handlers: Array<{ element: Element | null; type: string; handler: EventListener }> = [];
+
         toggleBtn?.addEventListener("click", openSidebar);
+        handlers.push({ element: toggleBtn, type: "click", handler: openSidebar });
+
         closeBtn?.addEventListener("click", closeSidebar);
+        handlers.push({ element: closeBtn, type: "click", handler: closeSidebar });
+
         overlay?.addEventListener("click", closeSidebar);
+        handlers.push({ element: overlay, type: "click", handler: closeSidebar });
 
         // Close on link click (mobile)
         const links = sidebar?.querySelectorAll("a");
+        const linkClickHandler = () => {
+            if (window.innerWidth < 1024) {
+                closeSidebar();
+            }
+        };
         links?.forEach((link) => {
-            link.addEventListener("click", () => {
-                if (window.innerWidth < 1024) {
-                    closeSidebar();
-                }
-            });
+            link.addEventListener("click", linkClickHandler);
+            handlers.push({ element: link, type: "click", handler: linkClickHandler });
         });
+
+        // Store cleanup function
+        window._sidebarCleanup = () => {
+            handlers.forEach(({ element, type, handler }) => {
+                element?.removeEventListener(type, handler);
+            });
+        };
     }
 
     document.addEventListener("astro:page-load", setupSidebar);
