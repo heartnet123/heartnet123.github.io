@@ -20,5 +20,10 @@ export default defineConfig({
             }
         }
     },
-    site: 'https://heartnet123.github.io'
+    site: 'https://heartnet123.github.io',
+    image: {
+        service: {
+            entrypoint: 'astro/assets/services/noop'
+        }
+    }
 });
