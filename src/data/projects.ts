@@ -198,9 +198,15 @@ export const projects: Project[] = [
     tagline: "SmartStock for recipe-based businesses and small retail",
     description:
       "Meguri is a smart stock and demand forecasting app for recipe-driven businesses and small retail teams. It keeps workspace, inventory, recipes, sales, suppliers, purchase planning, alerts, and forecasting in one operational system so daily work stays visible and controlled.",
-    heroImage: "/projects/meguri.svg",
+    heroImage: "/projects/meguri-1.png",
     screenshots: [
-      { src: "/projects/meguri.svg", alt: "Meguri dashboard preview" },
+      { src: "/projects/meguri-1.png", alt: "Meguri dashboard overview" },
+      { src: "/projects/meguri-2.png", alt: "Meguri product creation modal" },
+      { src: "/projects/meguri-3.png", alt: "Meguri inventory list" },
+      { src: "/projects/meguri-4.png", alt: "Meguri recipe and BOM screen" },
+      { src: "/projects/meguri-5.png", alt: "Meguri sales log" },
+      { src: "/projects/meguri-6.png", alt: "Meguri forecasting view" },
+      { src: "/projects/meguri-7.png", alt: "Meguri supplier management screen" },
     ],
     problem:
       "Small businesses often manage stock in spreadsheets or manual workflows. That makes stock movement hard to track, connects sales to recipes or BOMs poorly, delays purchasing, and increases the chance of stockouts or waste.",
