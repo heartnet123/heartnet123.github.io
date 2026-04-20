@@ -37,11 +37,20 @@ const siteUrl = "https://heartnet123.github.io";
 		<meta name="twitter:description" content={description} />
 		<ClientRouter />
 	</head>
-	<body>
+	<body class="flex flex-col min-h-screen">
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only fixed top-4 left-4 z-[100] bg-primary text-primary-content px-4 py-2 rounded-lg font-bold shadow-2xl ring-2 ring-primary/50 ring-offset-2 ring-offset-base-100 transition-all"
+		>
+			Skip to content
+		</a>
+
 		<button
 			id="sidebar-toggle"
-			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
+			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 outline-none"
 			aria-label="Toggle Sidebar"
+			aria-expanded="false"
+			aria-controls="sidebar"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -59,8 +68,10 @@ const siteUrl = "https://heartnet123.github.io";
 		</button>
 
 		<Sidebar />
-		<div class="lg:ml-20">
-			<slot />
+		<div class="lg:ml-20 flex-1 flex flex-col">
+			<main id="main-content" tabindex="-1" class="flex-1 outline-none">
+				<slot />
+			</main>
 			<Footer />
 		</div>
 		<script src="../assets/scroll-tracker.js"></script>
