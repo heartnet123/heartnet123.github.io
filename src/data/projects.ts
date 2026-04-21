@@ -23,6 +23,89 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "portfolio-website",
+    name: "Developer Portfolio",
+    tagline:
+      "Animation-driven personal portfolio and blog built with Astro, Tailwind CSS, and GSAP",
+    description:
+      "A statically-generated developer portfolio website that showcases projects, technical skills, work experience, and a Markdown-powered blog. Built with Astro 5 for fast static output, styled with Tailwind CSS v4 and DaisyUI, and enhanced with GSAP scroll-triggered animations and Lenis smooth scrolling. Deployed automatically to GitHub Pages via a Bun-based CI/CD pipeline.",
+    heroImage: "/projects/portfolio.svg",
+    screenshots: [
+      {
+        src: "/projects/portfolio.svg",
+        alt: "Portfolio website homepage",
+      },
+    ],
+    problem:
+      "Generic portfolio templates lack personality and performance. Most are either over-engineered SPAs that hurt load times, or static HTML pages with no interactivity. A developer portfolio needs to be fast, visually engaging, easy to maintain, and simple to extend with new projects and blog posts.",
+    solution:
+      "Built a static site with Astro 5 that ships zero JavaScript by default and hydrates only the interactive React islands that need it. Projects are defined as typed data objects for easy updates, blog posts are authored in Markdown with syntax highlighting, and GSAP handles scroll-driven motion design without compromising performance.",
+    techStack: [
+      {
+        name: "Astro 5",
+        reason:
+          "Astro's island architecture ships zero client JS by default and only hydrates interactive components, keeping the portfolio fast while still supporting React where needed.",
+      },
+      {
+        name: "React 19",
+        reason:
+          "Used for interactive UI primitives (buttons, cards) via shadcn/ui, hydrated as Astro islands only where interactivity is required.",
+      },
+      {
+        name: "Tailwind CSS 4 + DaisyUI 5",
+        reason:
+          "Provides the utility-first styling system and the dark-mode 'forest' theme, keeping the design consistent without writing custom CSS.",
+      },
+      {
+        name: "GSAP + ScrollTrigger",
+        reason:
+          "Powers the scroll-triggered reveal animations and the sequenced hero entrance timeline, giving the site a polished motion design layer.",
+      },
+      {
+        name: "Lenis",
+        reason:
+          "Adds smooth inertial scrolling synced with GSAP's ticker for a buttery scroll experience across the entire site.",
+      },
+      {
+        name: "Bun + GitHub Actions",
+        reason:
+          "Bun handles dependency installation and builds. A GitHub Actions workflow deploys the static output to GitHub Pages on every push to main.",
+      },
+    ],
+    features: [
+      "Data-driven project gallery with typed project definitions and featured filtering",
+      "Markdown blog with Astro Content Collections and Shiki syntax highlighting",
+      "GSAP scroll-triggered reveal animations with directional variants (left, right, up, down)",
+      "Sequenced hero entrance timeline animation",
+      "Lenis smooth scrolling integrated with GSAP ticker",
+      "SEO-ready with Open Graph and Twitter Card meta tags per page",
+      "Responsive sidebar navigation with DaisyUI forest theme",
+      "Automated CI/CD deployment to GitHub Pages via GitHub Actions",
+      "Reading time estimation for blog posts",
+    ],
+    challenges: [
+      {
+        title: "Coordinating GSAP with Astro page transitions",
+        description:
+          "Astro's client-side navigation fires astro:page-load events that require re-initialising GSAP timelines and ScrollTrigger instances. Lenis also needs to be destroyed and recreated on each navigation to avoid stale scroll state.",
+      },
+      {
+        title: "Balancing zero-JS defaults with interactive islands",
+        description:
+          "Astro ships no JavaScript by default, so React components like shadcn/ui buttons and cards need explicit hydration directives. Deciding which components need client-side interactivity versus static rendering required careful scoping.",
+      },
+      {
+        title: "Respecting reduced motion preferences",
+        description:
+          "All GSAP animations check prefers-reduced-motion before running, ensuring the site remains accessible to users who have motion sensitivity without maintaining a separate animation-free codebase.",
+      },
+    ],
+    github: "https://github.com/heartnet123/heartnet123.github.io",
+    demo: "https://heartnet123.github.io",
+    skills: ["Astro", "Tailwind CSS", "GSAP"],
+    featured: false,
+  },
+  {
     slug: "jisa-ai-manga-translator",
     name: "Jisa - AI Manga Translator",
     tagline:

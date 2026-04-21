@@ -118,7 +118,7 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
             </svg>
           </a>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {featuredProjects.map((project) => (
             <Card
               name={project.name}
@@ -145,7 +145,7 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
           <div class="h-px w-24 bg-green-500/50 gsap-reveal gsap-left"></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           {/* Frontend */}
           <div class="border border-white/6 p-6 hover:border-green-500/40 transition-colors duration-300 gsap-reveal gsap-up">
@@ -188,7 +188,7 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
           </div>
 
           {/* Tools */}
-          <div class="border border-white/6 p-6 hover:border-green-500/40 transition-colors duration-300 gsap-reveal gsap-up md:col-span-2 lg:col-span-1">
+          <div class="border border-white/6 p-6 hover:border-green-500/40 transition-colors duration-300 gsap-reveal gsap-up">
             <div class="flex items-start gap-4 mb-6">
               <div class="p-2.5 border border-green-500/20 bg-green-500/5 flex-shrink-0">
                 <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -202,6 +202,27 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
             </div>
             <div class="flex flex-wrap gap-1.5">
               {["Git", "Docker", "Kubernetes", "AWS", "Linux", "CI/CD", "Figma", "Turborepo", "Nginx"].map((skill) => (
+                <span class="px-2.5 py-1 border border-white/8 text-gray-500 text-xs font-mono hover:border-green-500/40 hover:text-green-400 transition-colors duration-200">{skill}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* AI / ML */}
+          <div class="border border-white/6 p-6 hover:border-green-500/40 transition-colors duration-300 gsap-reveal gsap-up">
+            <div class="flex items-start gap-4 mb-6">
+              <div class="p-2.5 border border-green-500/20 bg-green-500/5 flex-shrink-0">
+                <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v3m0 12v3M3 12h3m12 0h3M7.2 7.2l2.1 2.1m5.4 5.4 2.1 2.1M16.8 7.2l-2.1 2.1M9.3 14.7l-2.1 2.1"/>
+                  <circle cx="12" cy="12" r="3.25" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-base font-semibold text-white uppercase tracking-wider mb-0.5">AI / ML</h3>
+                <p class="text-xs font-mono text-gray-600 uppercase">Prompt / Retrieval / Models</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              {["Prompt Engineering", "LLMs", "RAG", "OpenAI API", "LangChain", "Vector Databases", "Hugging Face", "PyTorch", "TensorFlow", "AI Agents", "MLOps"].map((skill) => (
                 <span class="px-2.5 py-1 border border-white/8 text-gray-500 text-xs font-mono hover:border-green-500/40 hover:text-green-400 transition-colors duration-200">{skill}</span>
               ))}
             </div>
