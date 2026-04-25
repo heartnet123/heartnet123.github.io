@@ -199,25 +199,96 @@ const { project } = Astro.props;
       </div>
 
       {/* ── Screenshots ── */}
-      {project.screenshots.length > 1 && (
+      {project.screenshots.length > 0 && (
         <div>
           <div class="flex items-center gap-3 mb-6 gsap-reveal gsap-up">
             <span class="text-xs font-mono text-green-500 uppercase tracking-widest">06</span>
             <h2 class="text-2xl font-bold text-white">Screenshots</h2>
             <div class="flex-1 h-px bg-white/5"></div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {project.screenshots.map((shot) => (
-              <div class="rounded-xl overflow-hidden border border-white/5 bg-surface gsap-reveal gsap-up">
-                <img
-                  src={shot.src}
-                  alt={shot.alt}
-                  class="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-                <p class="px-4 py-2 text-xs text-gray-500 font-mono">{shot.alt}</p>
+
+          <div class="space-y-4">
+            <div
+              class="group relative overflow-hidden rounded-2xl border border-white/5 bg-surface gsap-reveal gsap-up"
+              data-project-carousel
+              data-carousel-count={project.screenshots.length}
+            >
+              <div class="relative aspect-[16/10] bg-black">
+                {project.screenshots.map((shot, index) => (
+                  <button
+                    type="button"
+                    class:list={{
+                      "absolute inset-0 z-0 transition-opacity duration-300 focus:outline-none": true,
+                      "opacity-100": index === 0,
+                      "opacity-0 pointer-events-none": index !== 0,
+                    }}
+                    data-carousel-slide
+                    data-carousel-index={index}
+                    aria-label={`Open screenshot ${index + 1} of ${project.screenshots.length}`}
+                    aria-hidden={index !== 0}
+                    tabIndex={index === 0 ? 0 : -1}
+                  >
+                    <img
+                      src={shot.src}
+                      alt={shot.alt}
+                      class="h-full w-full object-contain"
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  </button>
+                ))}
               </div>
-            ))}
+
+              {project.screenshots.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    data-carousel-prev
+                    class="absolute left-3 top-1/2 z-20 -translate-y-1/2 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-transparent text-white backdrop-blur-sm transition-colors hover:border-green-500/40 hover:bg-white/5 hover:text-green-400"
+                    aria-label="Previous screenshot"
+                  >
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    data-carousel-next
+                    class="absolute right-3 top-1/2 z-20 -translate-y-1/2 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-transparent text-white backdrop-blur-sm transition-colors hover:border-green-500/40 hover:bg-white/5 hover:text-green-400"
+                    aria-label="Next screenshot"
+                  >
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
+
+            <div class="relative z-10 flex items-center justify-between gap-3 text-xs font-mono text-gray-500">
+              <span data-carousel-counter>1 / {project.screenshots.length}</span>
+              <span>Click the image or use the arrows to browse</span>
+            </div>
+
+            {project.screenshots.length > 1 && (
+              <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+                {project.screenshots.map((shot, index) => (
+                  <button
+                    type="button"
+                    class="group overflow-hidden rounded-lg border border-white/5 bg-surface transition-colors hover:border-green-500/40"
+                    data-carousel-thumb
+                    data-carousel-index={index}
+                    aria-label={`Show screenshot ${index + 1}`}
+                  >
+                    <img
+                      src={shot.src}
+                      alt={shot.alt}
+                      class="h-20 w-full object-cover opacity-70 transition-opacity group-hover:opacity-100"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -252,4 +323,68 @@ const { project } = Astro.props;
 
     </div>
   </main>
+  <script>
+    function initProjectCarousel() {
+      const carousels = document.querySelectorAll<HTMLElement>('[data-project-carousel]');
+
+      carousels.forEach((carousel) => {
+        if (carousel.dataset.carouselBound === 'true') return;
+        carousel.dataset.carouselBound = 'true';
+
+        const slides = Array.from(
+          carousel.querySelectorAll<HTMLElement>('[data-carousel-slide]'),
+        );
+        const prevButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+        const nextButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+        const thumbs = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-carousel-thumb]'));
+        const counter = carousel.parentElement?.querySelector<HTMLElement>('[data-carousel-counter]');
+        const total = Number(carousel.dataset.carouselCount ?? slides.length);
+
+        if (!slides.length) return;
+
+        let activeIndex = 0;
+
+        const update = (nextIndex: number) => {
+          activeIndex = (nextIndex + slides.length) % slides.length;
+
+          slides.forEach((slide, index) => {
+            const isActive = index === activeIndex;
+            slide.classList.toggle('opacity-100', isActive);
+            slide.classList.toggle('opacity-0', !isActive);
+            slide.classList.toggle('pointer-events-none', !isActive);
+            slide.setAttribute('aria-hidden', String(!isActive));
+            slide.tabIndex = isActive ? 0 : -1;
+          });
+
+          thumbs.forEach((thumb, index) => {
+            const isActive = index === activeIndex;
+            thumb.classList.toggle('border-green-500/40', isActive);
+            thumb.classList.toggle('ring-1', isActive);
+            thumb.classList.toggle('ring-green-500/30', isActive);
+            thumb.classList.toggle('opacity-100', isActive);
+            thumb.classList.toggle('opacity-70', !isActive);
+          });
+
+          if (counter) {
+            counter.textContent = `${activeIndex + 1} / ${total}`;
+          }
+        };
+
+        prevButton?.addEventListener('click', () => update(activeIndex - 1));
+        nextButton?.addEventListener('click', () => update(activeIndex + 1));
+        thumbs.forEach((thumb, index) => thumb.addEventListener('click', () => update(index)));
+        slides.forEach((slide, index) => slide.addEventListener('click', () => update(index)));
+
+        carousel.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowLeft') update(activeIndex - 1);
+          if (event.key === 'ArrowRight') update(activeIndex + 1);
+        });
+
+        update(0);
+      });
+    }
+
+    document.addEventListener('astro:page-load', initProjectCarousel);
+    document.addEventListener('astro:after-swap', initProjectCarousel);
+  </script>
 </Layout>
