@@ -21,7 +21,7 @@ const { project } = Astro.props;
   title={`${project.name} — JJ Portfolio`}
   description={project.tagline}
 >
-  <main class="min-h-screen bg-base-100">
+  <div class="min-h-screen bg-base-100">
 
     {/* ─────────────────────── Hero ─────────────────────── */}
     <section class="relative h-[55vh] min-h-[360px] overflow-hidden">
@@ -322,7 +322,7 @@ const { project } = Astro.props;
       </div>
 
     </div>
-  </main>
+  </div>
   <script>
     function initProjectCarousel() {
       const carousels = document.querySelectorAll<HTMLElement>('[data-project-carousel]');

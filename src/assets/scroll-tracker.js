@@ -1,6 +1,7 @@
 document.addEventListener('astro:page-load', () => {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.tabs a.tab[href^="#"]');
+  // Select both root-relative and hash-only links in the sidebar that point to sections
+  const navLinks = document.querySelectorAll('#sidebar a[href^="#"], #sidebar a[href^="/#"]');
 
   // Cleanup: Disconnect previous observer to prevent memory leaks
   if (window._sectionObserver) {
@@ -27,7 +28,7 @@ document.addEventListener('astro:page-load', () => {
       const id = entry.target.getAttribute('id');
       // Use CSS.escape to handle special characters in IDs safely
       const safeId = CSS.escape(id);
-      const navLink = document.querySelector(`.tabs a.tab[href="#${safeId}"]`);
+      const navLink = document.querySelector(`#sidebar a[href="#${safeId}"], #sidebar a[href="/#${safeId}"]`);
 
       if (entry.isIntersecting) {
         navLinks.forEach(link => {
