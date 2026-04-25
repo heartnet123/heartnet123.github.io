@@ -90,6 +90,8 @@ const siteUrl = "https://heartnet123.github.io";
 			}
 
 			function initScrollReveals() {
+				if (document.querySelector("#index-page, #about-page")) return;
+
 				gsap.utils.toArray(".gsap-reveal").forEach((elem: any) => {
 					let x = 0,
 						y = 50;

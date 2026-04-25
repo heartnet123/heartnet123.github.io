@@ -72,7 +72,7 @@ const interests = [
   title="About — JJ Portfolio"
   description="Learn about Earth, a full-stack developer focused on AI engineer roles — his background, technical philosophy, education, certifications, and what drives him to build."
 >
-  <main class="min-h-screen bg-base-100">
+  <main id="about-page" data-page="about" class="min-h-screen bg-base-100">
     {/* ─── HERO ──────────────────────────────────────────────── */}
     <section class="relative min-h-[60vh] flex items-center bg-base-100 pt-24 pb-16 overflow-hidden">
       {/* Subtle grid background */}
@@ -161,7 +161,7 @@ const interests = [
     </section>
 
     {/* ─── PROFESSIONAL SUMMARY ──────────────────────────────── */}
-    <section class="py-20 bg-base-200">
+    <section data-about-section class="py-20 bg-base-200">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -222,7 +222,7 @@ const interests = [
     </section>
 
     {/* ─── TECHNICAL PHILOSOPHY ──────────────────────────────── */}
-    <section class="py-20 bg-base-100">
+    <section data-about-section class="py-20 bg-base-100">
       <div class="container mx-auto px-6 max-w-6xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -261,7 +261,7 @@ const interests = [
     </section>
 
     {/* ─── EDUCATION ─────────────────────────────────────────── */}
-    <section class="py-20 bg-base-200">
+    <section data-about-section class="py-20 bg-base-200">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -328,7 +328,7 @@ const interests = [
     </section> -->
 
     {/* ─── INTERESTS ─────────────────────────────────────────── */}
-    <section class="py-20 bg-base-200">
+    <section data-about-section class="py-20 bg-base-200">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="mb-12">
           <p class="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2 gsap-reveal gsap-left">
@@ -359,7 +359,7 @@ const interests = [
     </section>
 
     {/* ─── CTA FOOTER ────────────────────────────────────────── */}
-    <section class="py-20 bg-base-100">
+    <section data-about-section class="py-20 bg-base-100">
       <div class="container mx-auto px-6 max-w-5xl">
         <div class="border border-green-500/30 bg-surface p-12 lg:p-16 relative gsap-reveal gsap-up">
           <div class="text-center">
@@ -395,16 +395,130 @@ const interests = [
 
   <script>
     import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-    document.addEventListener("astro:page-load", () => {
-      // Page hero entrance animation
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.from(".about-label",  { y: 20, opacity: 0, duration: 0.5 })
-        .from(".about-title",  { y: 40, opacity: 0, duration: 0.7 }, "-=0.3")
-        .from(".about-desc",   { y: 20, opacity: 0, duration: 0.6 }, "-=0.5")
-        .from(".about-badges", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4")
-        .from(".about-cta",    { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
-        .from(".about-image",  { x: 40, opacity: 0, duration: 0.8 }, "-=0.8");
-    });
+    gsap.registerPlugin(ScrollTrigger);
+
+    const rootSelector = "#about-page";
+
+    function cleanupAboutAnimations() {
+      const state = (window as any).__aboutPageAnimations;
+      if (!state) return;
+
+      state.mm?.revert();
+      state.ctx?.revert();
+      (window as any).__aboutPageAnimations = null;
+    }
+
+    function getScopedItems(root: Element, selector: string) {
+      return gsap.utils.toArray(root.querySelectorAll(selector));
+    }
+
+    function getRevealOffset(element: Element) {
+      if (element.classList.contains("gsap-left")) return { x: -36, y: 0 };
+      if (element.classList.contains("gsap-right")) return { x: 36, y: 0 };
+      if (element.classList.contains("gsap-down")) return { x: 0, y: -28 };
+      return { x: 0, y: 28 };
+    }
+
+    function showReducedMotionState(targets: Element[]) {
+      gsap.set(targets, {
+        autoAlpha: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        clearProps: "transform,opacity,visibility",
+      });
+    }
+
+    function initAboutAnimations() {
+      cleanupAboutAnimations();
+
+      const root = document.querySelector(rootSelector);
+      if (!root) return;
+
+      const mm = gsap.matchMedia();
+      const ctx = gsap.context(() => {
+        mm.add(
+          {
+            reduceMotion: "(prefers-reduced-motion: reduce)",
+            allowMotion: "(prefers-reduced-motion: no-preference)",
+          },
+          (context) => {
+            const reduceMotion = context.conditions?.reduceMotion;
+            const heroCopy = getScopedItems(
+              root,
+              ".about-label, .about-title, .about-desc, .about-badges, .about-cta",
+            );
+            const heroImage = getScopedItems(root, ".about-image");
+            const revealItems = getScopedItems(root, ".gsap-reveal");
+
+            if (reduceMotion) {
+              showReducedMotionState([...heroCopy, ...heroImage, ...revealItems]);
+              return;
+            }
+
+            gsap.set(heroCopy, { autoAlpha: 0, y: 24 });
+            gsap.set(heroImage, { autoAlpha: 0, x: 36, scale: 0.98 });
+            revealItems.forEach((item: any) => {
+              const { x, y } = getRevealOffset(item);
+              gsap.set(item, { autoAlpha: 0, x, y, scale: 0.98 });
+            });
+
+            gsap
+              .timeline({ defaults: { ease: "power3.out", overwrite: "auto" } })
+              .to(heroCopy, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.65,
+                stagger: 0.08,
+              })
+              .to(
+                heroImage,
+                {
+                  autoAlpha: 1,
+                  x: 0,
+                  scale: 1,
+                  duration: 0.75,
+                },
+                "-=0.5",
+              );
+
+            gsap.utils.toArray("[data-about-section]").forEach((section: any, index) => {
+              const sectionItems = gsap.utils.toArray(section.querySelectorAll(".gsap-reveal"));
+              if (!sectionItems.length) return;
+
+              gsap.timeline({
+                defaults: { ease: "power3.out", overwrite: "auto" },
+                scrollTrigger: {
+                  id: `about-reveal-${index}`,
+                  trigger: section,
+                  start: "top 82%",
+                  toggleActions: "play none none reverse",
+                },
+              }).to(sectionItems, {
+                autoAlpha: 1,
+                x: 0,
+                y: 0,
+                scale: 1,
+                duration: 0.65,
+                stagger: 0.1,
+              });
+            });
+
+            ScrollTrigger.refresh();
+          },
+          root,
+        );
+      }, root);
+
+      (window as any).__aboutPageAnimations = { ctx, mm };
+    }
+
+    if (!(window as any).__aboutPageAnimationEventsBound) {
+      document.addEventListener("astro:page-load", initAboutAnimations);
+      document.addEventListener("astro:before-swap", cleanupAboutAnimations);
+      (window as any).__aboutPageAnimationEventsBound = true;
+    }
   </script>
 </Layout>
