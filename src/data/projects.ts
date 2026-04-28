@@ -59,7 +59,7 @@ export const projects: Project[] = [
       {
         name: "GSAP + ScrollTrigger",
         reason:
-          "Powers the scroll-triggered reveal animations and the sequenced hero entrance timeline, giving the site a polished motion design layer.",
+          "Powers the sequenced hero entrance, pinned Featured Work scroll, reusable reveal animations, and screenshot carousel transitions.",
       },
       {
         name: "Lenis",
@@ -76,7 +76,8 @@ export const projects: Project[] = [
       "Data-driven project gallery with typed project definitions and featured filtering",
       "Markdown blog with Astro Content Collections and Shiki syntax highlighting",
       "GSAP scroll-triggered reveal animations with directional variants (left, right, up, down)",
-      "Sequenced hero entrance timeline animation",
+      "Pinned horizontal Featured Work section with ScrollTrigger-driven progress",
+      "Sequenced hero entrance timeline and GSAP-powered screenshot carousel transitions",
       "Lenis smooth scrolling integrated with GSAP ticker",
       "SEO-ready with Open Graph and Twitter Card meta tags per page",
       "Responsive sidebar navigation with DaisyUI forest theme",
@@ -513,72 +514,6 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/heartnet123/BookCube",
     skills: ["Django", "PostgreSQL", "Python"],
-    featured: true,
-  },
-  {
-    slug: "kitchen-inventory",
-    name: "Kitchen Inventory",
-    tagline: "Cross-platform desktop app for tracking home kitchen inventory",
-    description:
-      "Kitchen Inventory is a native desktop application built with Tauri and SvelteKit that helps households track pantry items, set expiry-date alerts, and generate shopping lists. It runs offline-first with a local SQLite database, meaning no account sign-up or internet connection is required.",
-    heroImage: "/projects/kitchen.png",
-    screenshots: [
-      { src: "/projects/kitchen.png", alt: "Kitchen Inventory main dashboard" },
-    ],
-    problem:
-      "Households regularly buy duplicate groceries or throw away expired food because there is no easy way to see what is already in the pantry. Cloud-based inventory apps require an account and a network connection, which is unnecessary friction for a personal utility.",
-    solution:
-      "Built a lightweight desktop application that stores all data in a local SQLite file via Tauri's Rust backend. The SvelteKit frontend communicates with the Rust layer through Tauri's typed command API, giving a web-development workflow while shipping a native binary with a tiny footprint (~10 MB installer).",
-    techStack: [
-      {
-        name: "Tauri",
-        reason:
-          "Tauri wraps a native WebView around a Rust backend, producing installers dramatically smaller than Electron (< 10 MB vs. 100+ MB). The Rust layer handles file-system access and SQLite via rusqlite, keeping sensitive operations out of the JavaScript context.",
-      },
-      {
-        name: "SvelteKit",
-        reason:
-          "Svelte compiles away the framework at build time, producing minimal JS. Its reactive stores map naturally to real-time UI updates when inventory quantities change. SvelteKit's file-based routing structures the app's views cleanly.",
-      },
-      {
-        name: "SQLite (via rusqlite)",
-        reason:
-          "A single-file database is ideal for a personal desktop app — no server process, easy to backup by copying one file, and sufficient for thousands of inventory records with sub-millisecond queries.",
-      },
-      {
-        name: "Rust",
-        reason:
-          "Tauri's backend commands are written in Rust, providing memory safety and performance for file I/O and database operations without a runtime dependency on Node.js or Python.",
-      },
-    ],
-    features: [
-      "Add, edit, and delete pantry items with quantity and unit",
-      "Expiry-date tracking with colour-coded alerts (fresh / expiring soon / expired)",
-      "Category organisation (dairy, produce, dry goods, etc.)",
-      "Auto-generated shopping list from low-stock items",
-      "Full offline operation — no account or internet required",
-      "Cross-platform: Windows, macOS, and Linux installers",
-      "Data stored in a portable SQLite file (easy backup)",
-    ],
-    challenges: [
-      {
-        title: "Bridging Svelte and Rust",
-        description:
-          "Tauri's invoke API is asynchronous. Designing a clean abstraction layer that wraps Tauri commands in typed TypeScript functions — and handles errors uniformly — took careful API design to avoid callback complexity in the Svelte components.",
-      },
-      {
-        title: "SQLite migrations in a desktop context",
-        description:
-          "Unlike a server app, users may skip versions when updating. Implementing a lightweight migration runner in Rust that applies pending schema migrations on startup — without an ORM — required writing raw SQL migration files and tracking applied versions in a meta table.",
-      },
-      {
-        title: "Packaging for multiple platforms",
-        description:
-          "Each target OS requires a different signing and packaging setup (MSI for Windows, DMG for macOS, AppImage for Linux). Setting up GitHub Actions to cross-compile and sign on all three platforms added significant CI complexity.",
-      },
-    ],
-    github: "https://github.com/heartnet123/kitcheninventory",
-    skills: ["Tauri", "SvelteKit", "SQLite", "Rust"],
     featured: true,
   },
 ];
