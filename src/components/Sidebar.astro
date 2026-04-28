@@ -10,13 +10,17 @@ const isActive = (path: string) => {
 
 <aside
     id="sidebar"
-    class="fixed left-0 top-0 h-full w-64 lg:w-20 bg-base-100 border-r border-white/5 flex flex-col items-center py-8 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-300"
+    class="fixed left-0 top-0 h-full w-64 lg:w-20 bg-base-100 border-r border-white/5 flex flex-col items-center py-8 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-300 invisible lg:visible"
+    aria-label="Main Navigation"
+    aria-hidden="true"
 >
     {/* Close Button (Mobile Only) */}
     <button
         id="close-sidebar"
-        class="lg:hidden absolute top-4 right-4 p-3 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
+        class="lg:hidden absolute top-4 right-4 p-3 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none"
         aria-label="Close Sidebar"
+        aria-controls="sidebar"
+        aria-expanded="true"
     >
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -37,9 +41,10 @@ const isActive = (path: string) => {
     <a
         href="/"
         class:list={[
-            "mb-12 p-3 rounded-xl transition-all hover:scale-110",
+            "mb-12 p-3 rounded-xl transition-all hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none",
             isActive("/") ? "bg-primary/10 text-primary" : "text-gray-400 hover:text-white"
         ]}
+        aria-label="Home"
         aria-current={isActive("/") ? "page" : undefined}
     >
         <svg
@@ -62,7 +67,7 @@ const isActive = (path: string) => {
         <a
             href="/about"
             class:list={[
-                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none",
                 isActive("/about") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
             ]}
             aria-label="About"
@@ -85,15 +90,15 @@ const isActive = (path: string) => {
                 <span class="lg:hidden font-medium">About</span>
             </div>
             <span
-                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
-                >About</span
+                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
+                aria-hidden="true">About</span
             >
         </a>
 
         <a
             href="/projects"
             class:list={[
-                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none",
                 isActive("/projects") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
             ]}
             aria-label="Projects"
@@ -117,15 +122,15 @@ const isActive = (path: string) => {
                 <span class="lg:hidden font-medium">Projects</span>
             </div>
             <span
-                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
-                >Projects</span
+                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
+                aria-hidden="true">Projects</span
             >
         </a>
 
         <a
             href="/work"
             class:list={[
-                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none",
                 isActive("/work") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
             ]}
             aria-label="Work"
@@ -147,18 +152,18 @@ const isActive = (path: string) => {
                     <line x1="8" y1="21" x2="16" y2="21"></line>
                     <line x1="12" y1="17" x2="12" y2="21"></line>
                 </svg>
-                <span class="lg:hidden font-medium">Experience</span>
+                <span class="lg:hidden font-medium">Work</span>
             </div>
             <span
-                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
-                >Work</span
+                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
+                aria-hidden="true">Work</span
             >
         </a>
 
         <a
             href="/blog"
             class:list={[
-                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto",
+                "group relative flex justify-center p-3 rounded-xl transition-all w-full lg:w-auto focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none",
                 isActive("/blog") ? "bg-primary/10 text-primary" : "hover:bg-white/5 text-gray-400 hover:text-white"
             ]}
             aria-label="Blog"
@@ -186,8 +191,8 @@ const isActive = (path: string) => {
                 <span class="lg:hidden font-medium">Blog</span>
             </div>
             <span
-                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
-                >Blog</span
+                class="hidden lg:block absolute left-16 bg-white text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none whitespace-nowrap"
+                aria-hidden="true">Blog</span
             >
         </a>
 
@@ -196,7 +201,7 @@ const isActive = (path: string) => {
             download="resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            class="group relative flex justify-center p-3 rounded-xl hover:bg-green-500/10 text-gray-300 hover:text-green-400 transition-all w-full lg:w-auto"
+            class="group relative flex justify-center p-3 rounded-xl hover:bg-green-500/10 text-gray-300 hover:text-green-400 transition-all w-full lg:w-auto focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none"
             aria-label="Download Resume"
         >
             <div class="flex items-center gap-4 lg:justify-center">
@@ -227,7 +232,7 @@ const isActive = (path: string) => {
     {/* Bottom/Contact */}
     <a
         href="/#contact"
-        class="mb-4 p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all w-full lg:w-auto flex justify-center"
+        class="mb-4 p-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all w-full lg:w-auto flex justify-center focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none"
         aria-label="Contact"
     >
         <div class="flex items-center gap-4 lg:justify-center">
@@ -277,15 +282,30 @@ const isActive = (path: string) => {
         }
 
         function openSidebar() {
-            sidebar?.classList.remove("-translate-x-full");
+            sidebar?.classList.remove("-translate-x-full", "invisible");
+            sidebar?.setAttribute("aria-hidden", "false");
             overlay?.classList.remove("hidden");
+            toggleBtn?.setAttribute("aria-expanded", "true");
+            closeBtn?.setAttribute("aria-expanded", "true");
             document.body.style.overflow = "hidden";
         }
 
         function closeSidebar() {
-            sidebar?.classList.add("-translate-x-full");
+            sidebar?.classList.add("-translate-x-full", "invisible");
+            sidebar?.setAttribute("aria-hidden", "true");
             overlay?.classList.add("hidden");
+            toggleBtn?.setAttribute("aria-expanded", "false");
+            closeBtn?.setAttribute("aria-expanded", "false");
             document.body.style.overflow = "";
+        }
+
+        // Handle initial state based on viewport
+        if (window.innerWidth < 1024) {
+            sidebar?.classList.add("invisible");
+            sidebar?.setAttribute("aria-hidden", "true");
+        } else {
+            sidebar?.classList.remove("invisible");
+            sidebar?.setAttribute("aria-hidden", "false");
         }
 
         // Store handlers for cleanup
