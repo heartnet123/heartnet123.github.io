@@ -40,8 +40,10 @@ const siteUrl = "https://heartnet123.github.io";
 	<body>
 		<button
 			id="sidebar-toggle"
-			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
+			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-base-100 outline-none"
 			aria-label="Toggle Sidebar"
+			aria-expanded="false"
+			aria-controls="sidebar"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
