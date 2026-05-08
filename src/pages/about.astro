@@ -2,6 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import profileImage from "../assets/profile.jpg";
+import { projects } from "../data/projects";
+
+const codingStartYear = 2022;
+const codingYears = Math.max(new Date().getFullYear() - codingStartYear, 0);
+const projectCount = projects.length;
 
 const philosophy = [
   {
@@ -147,11 +152,11 @@ const interests = [
               </div>
               {/* Floating stat cards */}
               <div class="absolute -bottom-4 -left-4 bg-surface bg-black/80 border border-gray-600 px-4 py-3 rounded-xl">
-                <p class="text-2xl font-bold text-green-500">4+</p>
+                <p class="text-2xl font-bold text-green-500">{codingYears}</p>
                 <p class="text-xs text-gray-300 font-mono uppercase">Yrs Coding</p>
               </div>
               <div class="absolute -top-4 -right-4 bg-surface bg-black/80 border border-gray-600 px-4 py-3 rounded-xl">
-                <p class="text-2xl font-bold text-green-500">5+</p>
+                <p class="text-2xl font-bold text-green-500">{projectCount}</p>
                 <p class="text-xs text-gray-300 font-mono uppercase">Projects</p>
               </div>
             </div>
