@@ -199,11 +199,43 @@ export const projects: Project[] = [
       "AI-powered Bangkok trip discovery with maps, chat, saved itineraries, and multilingual planning.",
     description:
       "SeeU Bangkok is an AI-powered travel discovery platform for finding places, planning trips, and exploring Bangkok through an interactive map and chat experience. It combines a Next.js web app, a Hono API, Supabase, and AI agent workflows to help users discover authentic local spots instead of only the usual tourist highlights.",
-    heroImage: "/projects/seeu-bangkok.svg",
+    heroImage: "/projects/seeubang1.png",
     screenshots: [
       {
-        src: "/projects/seeu-bangkok.svg",
-        alt: "SeeU Bangkok planner preview",
+        src: "/projects/seeubang1.png",
+        alt: "SeeU Bangkok homepage preview",
+      },
+      {
+        src: "/projects/seeubang2.png",
+        alt: "SeeU Bangkok place detail preview",
+      },
+      {
+        src: "/projects/seeubang3.png",
+        alt: "SeeU Bangkok map planner preview",
+      },
+      {
+        src: "/projects/seeubang4.png",
+        alt: "SeeU Bangkok screenshot 4",
+      },
+      {
+        src: "/projects/seeubang5.png",
+        alt: "SeeU Bangkok screenshot 5",
+      },
+      {
+        src: "/projects/seeubang6.png",
+        alt: "SeeU Bangkok screenshot 6",
+      },
+      {
+        src: "/projects/seeubang7.png",
+        alt: "SeeU Bangkok screenshot 7",
+      },
+      {
+        src: "/projects/seeubang8.png",
+        alt: "SeeU Bangkok screenshot 8",
+      },
+      {
+        src: "/projects/seeubang9.png",
+        alt: "SeeU Bangkok screenshot 9",
       },
     ],
     problem:
@@ -290,7 +322,10 @@ export const projects: Project[] = [
       { src: "/projects/meguri-4.png", alt: "Meguri recipe and BOM screen" },
       { src: "/projects/meguri-5.png", alt: "Meguri sales log" },
       { src: "/projects/meguri-6.png", alt: "Meguri forecasting view" },
-      { src: "/projects/meguri-7.png", alt: "Meguri supplier management screen" },
+      {
+        src: "/projects/meguri-7.png",
+        alt: "Meguri supplier management screen",
+      },
     ],
     problem:
       "Small businesses often manage stock in spreadsheets or manual workflows. That makes stock movement hard to track, connects sales to recipes or BOMs poorly, delays purchasing, and increases the chance of stockouts or waste.",
