@@ -1,3 +1,7 @@
 ## 2025-05-15 - [Active Navigation State and Cross-Page Anchor Links]
 **Learning:** In single-page-centric designs (like portfolios), hash links (e.g., `#contact`) often break when the user navigates to a sub-page (e.g., `/about`). Explicitly prefixing with `/` (e.g., `/#contact`) ensures the link works from any location. Additionally, visual "you are here" indicators (active states) are critical for orientation in navigation systems that use icons only.
 **Action:** Always use root-relative paths for hash links in global navigation components and implement `aria-current="page"` alongside visual active states.
+
+## 2025-05-16 - [Semantic Landmarks and Mobile "Ghost Focus" Prevention]
+**Learning:** Nested `<main>` landmarks are a common accessibility violation in component-based frameworks like Astro. Consolidating the `<main>` landmark into a single global layout prevents screen reader confusion. Furthermore, off-screen mobile menus often suffer from "ghost focus," where hidden links remain in the tab order. Using `visibility: hidden` (or `display: none`) in conjunction with `aria-hidden="true"` effectively removes these elements from both the visual and accessibility trees when inactive.
+**Action:** Centralize the `<main id="main-content">` landmark in the root layout. Use a coordinated JS/CSS approach to toggle `visibility` and `aria-hidden` on mobile drawers to ensure focus containment.
