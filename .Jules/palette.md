@@ -1,3 +1,7 @@
 ## 2025-05-15 - [Active Navigation State and Cross-Page Anchor Links]
 **Learning:** In single-page-centric designs (like portfolios), hash links (e.g., `#contact`) often break when the user navigates to a sub-page (e.g., `/about`). Explicitly prefixing with `/` (e.g., `/#contact`) ensures the link works from any location. Additionally, visual "you are here" indicators (active states) are critical for orientation in navigation systems that use icons only.
 **Action:** Always use root-relative paths for hash links in global navigation components and implement `aria-current="page"` alongside visual active states.
+
+## 2025-05-15 - [Landmark Management and Client-Side Menu Persistence]
+**Learning:** Having multiple `<main>` tags (layout + individual pages) creates redundant accessibility landmarks. Consolidating the `<main>` landmark into the layout ensures a single entry point for screen readers across the entire site. Furthermore, when using Astro's view transitions, interactive scripts for navigation (like resize listeners and sidebar toggles) must be re-initialized on `astro:page-load` to prevent broken functionality after client-side navigation.
+**Action:** Centralize `<main id="main-content">` in the base layout and use `astro:page-load` for all navigation-related event listeners. Ensure mobile drawers are hidden from assistive technology (`aria-hidden`) when closed to prevent "ghost focus."
