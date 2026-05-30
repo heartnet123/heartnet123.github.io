@@ -113,11 +113,19 @@ export const projects: Project[] = [
       "End-to-end manga translation system for OCR, inpainting, and Thai typesetting.",
     description:
       "Jisa is an end-to-end manga translation system that uploads comic pages, detects speech bubbles, extracts text with OCR, translates it into Thai, removes the original text, and renders the translated text back into the page. The workflow combines a Python backend and a Next.js frontend to give users a local-first dashboard for uploading pages, monitoring progress, and reviewing original, cleaned, and translated results.",
-    heroImage: "/projects/jisa.svg",
+    heroImage: "/projects/jisa2.png",
     screenshots: [
       {
-        src: "/projects/jisa.svg",
-        alt: "Jisa manga translation pipeline preview",
+        src: "/projects/jisa2.png",
+        alt: "Jisa manga translation dashboard preview",
+      },
+      {
+        src: "/projects/jisa3.png",
+        alt: "Jisa side-by-side original and translated page review",
+      },
+      {
+        src: "/projects/jisa4.png",
+        alt: "Jisa speech bubble detection and OCR editor flow",
       },
     ],
     problem:
