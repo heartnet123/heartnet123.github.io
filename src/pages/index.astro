@@ -38,10 +38,10 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
             {/* Heading block */}
             <div data-index-hero="copy" class="mb-8 hero-title-1">
               <p class="text-sm font-mono text-gray-600 uppercase tracking-[0.2em] mb-3">Hi, I'm</p>
-              <h1 class="text-6xl md:text-7xl lg:text-[6.5rem] font-bold tracking-tight leading-none text-white mb-4">
+              <h1 class="text-6xl md:text-7xl lg:text-[6.5rem] font-bold tracking-tight leading-none text-white mb-4 hero-name">
                 Earth<span class="text-green-500">.</span>
               </h1>
-              <p class="text-2xl md:text-3xl text-gray-300 font-light tracking-wide hero-title-2">
+              <p class="text-2xl md:text-3xl text-gray-300 font-light tracking-wide hero-title-2 hero-subtitle">
                 Full Stack Developer
               </p>
             </div>
@@ -310,14 +310,24 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
   <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+    import { SplitText } from "gsap/SplitText";
+    import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, SplitText, DrawSVGPlugin);
 
     const rootSelector = "#index-page";
 
     function cleanupIndexAnimations() {
       const state = (window as any).__indexPageAnimations;
       if (!state) return;
+
+      if (state.onMouseMove && state.heroSec) {
+        state.heroSec.removeEventListener("mousemove", state.onMouseMove);
+      }
+      if (state.onMouseLeave && state.heroSec) {
+        state.heroSec.removeEventListener("mouseleave", state.onMouseLeave);
+      }
 
       state.mm?.revert();
       state.ctx?.revert();
@@ -345,6 +355,10 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
       if (!root) return;
 
       const mm = gsap.matchMedia();
+      let onMouseMove: any = null;
+      let onMouseLeave: any = null;
+      const heroSec = document.querySelector("#hero");
+
       const ctx = gsap.context(() => {
         mm.add(
           {
@@ -368,30 +382,107 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
               return;
             }
 
-            gsap.set(heroCopy, { autoAlpha: 0, y: 24 });
-            gsap.set(heroImage, { autoAlpha: 0, x: 32, scale: 0.98 });
-            gsap.set(revealItems, { autoAlpha: 0, y: 24 });
-            gsap.set(staggerItems, { autoAlpha: 0, y: 28, scale: 0.98 });
+            // 1. Initial State Setup
+            gsap.set(heroCopy[0], { autoAlpha: 0, y: 20 }); // Status badge
+            gsap.set(heroCopy[1], { autoAlpha: 0, y: 20 }); // Title parent
+            gsap.set(heroImage, { autoAlpha: 0, x: 40, scale: 0.96 });
+            gsap.set(revealItems, { autoAlpha: 0, y: 30 });
+            gsap.set(staggerItems, { autoAlpha: 0, y: 40, scale: 0.95, rotation: 1.5 });
 
+            // Apply will-change for performance
+            gsap.set([heroImage, ...revealItems, ...staggerItems], { willChange: "transform, opacity" });
+
+            // 2. SplitText Heading block
+            const nameSplit = new SplitText(".hero-name", { type: "chars" });
+            const subSplit = new SplitText(".hero-subtitle", { type: "words,lines" });
+
+            gsap.set(nameSplit.chars, { autoAlpha: 0, y: 35, rotateX: 45 });
+            gsap.set(subSplit.words, { autoAlpha: 0, y: 15 });
+
+            // 3. Hero Entry Timeline
             gsap
-              .timeline({ defaults: { ease: "power3.out", overwrite: "auto" } })
-              .to(heroCopy, {
+              .timeline({ defaults: { ease: "power4.out", overwrite: "auto" } })
+              .to(heroCopy[0], {
                 autoAlpha: 1,
                 y: 0,
-                duration: 0.65,
-                stagger: 0.08,
+                duration: 0.6,
               })
+              .to(
+                heroCopy[1],
+                {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.6,
+                },
+                "-=0.45"
+              )
+              .to(
+                nameSplit.chars,
+                {
+                  autoAlpha: 1,
+                  y: 0,
+                  rotateX: 0,
+                  duration: 0.8,
+                  stagger: 0.04,
+                  ease: "back.out(1.5)",
+                },
+                "-=0.4"
+              )
+              .to(
+                subSplit.words,
+                {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.6,
+                  stagger: 0.03,
+                },
+                "-=0.6"
+              )
+              .to(
+                getScopedItems(root, ".hero-desc"),
+                {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.6,
+                },
+                "-=0.5"
+              )
+              .to(
+                getScopedItems(root, ".hero-buttons"),
+                {
+                  autoAlpha: 1,
+                  y: 0,
+                  duration: 0.6,
+                },
+                "-=0.5"
+              )
               .to(
                 heroImage,
                 {
                   autoAlpha: 1,
                   x: 0,
                   scale: 1,
-                  duration: 0.75,
+                  duration: 0.9,
+                  ease: "power3.out",
+                  clearProps: "willChange"
                 },
-                "-=0.5",
+                "-=0.8"
               );
 
+            // 4. ScrollToPlugin for smooth scroll
+            const cta = root.querySelector("a[href='#project']");
+            if (cta) {
+              cta.addEventListener("click", (e) => {
+                e.preventDefault();
+                gsap.to(window, {
+                  duration: 1.2,
+                  scrollTo: { y: "#project", offsetY: 0 },
+                  ease: "power4.inOut"
+                });
+              });
+            }
+
+            // 5. Section reveals with dynamic ScrollTriggers
             gsap.utils.toArray("[data-index-section]").forEach((section: any, index) => {
               const sectionRevealItems = gsap.utils.toArray(
                 section.querySelectorAll("[data-index-reveal]"),
@@ -420,19 +511,100 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
               }
 
               if (sectionStaggerItems.length) {
-                sectionTimeline.to(
-                  sectionStaggerItems,
-                  {
-                    autoAlpha: 1,
-                    y: 0,
-                    scale: 1,
-                    duration: 0.65,
-                    stagger: 0.1,
-                  },
-                  sectionRevealItems.length ? "-=0.35" : 0,
-                );
+                // Specialized timeline for Skills section (DrawSVG + random staggers)
+                if (section.id === "skills") {
+                  // Hide tags initially to build entrance timeline
+                  const allTags = section.querySelectorAll("span");
+                  gsap.set(allTags, { autoAlpha: 0, scale: 0.8, y: 10 });
+
+                  sectionStaggerItems.forEach((cardEl: any) => {
+                    const paths = cardEl.querySelectorAll("svg path, svg circle");
+                    const tags = cardEl.querySelectorAll("span");
+
+                    sectionTimeline.to(cardEl, {
+                      autoAlpha: 1,
+                      y: 0,
+                      scale: 1,
+                      rotation: 0,
+                      duration: 0.7,
+                      clearProps: "willChange"
+                    }, "-=0.45");
+
+                    if (paths.length) {
+                      sectionTimeline.fromTo(paths,
+                        { drawSVG: "0%" },
+                        { drawSVG: "100%", duration: 0.8, ease: "power2.inOut", stagger: 0.1 },
+                        "-=0.45"
+                      );
+                    }
+
+                    if (tags.length) {
+                      sectionTimeline.fromTo(tags,
+                        { autoAlpha: 0, scale: 0.8, y: 10 },
+                        {
+                          autoAlpha: 1,
+                          scale: 1,
+                          y: 0,
+                          duration: 0.45,
+                          stagger: { each: 0.04, from: "random" }
+                        },
+                        "-=0.5"
+                      );
+                    }
+                  });
+                } else {
+                  // Standard stagger for project cards, etc.
+                  sectionTimeline.to(
+                    sectionStaggerItems,
+                    {
+                      autoAlpha: 1,
+                      y: 0,
+                      scale: 1,
+                      rotation: 0,
+                      duration: 0.75,
+                      stagger: 0.12,
+                      clearProps: "willChange"
+                    },
+                    sectionRevealItems.length ? "-=0.4" : 0,
+                  );
+                }
               }
             });
+
+            // 6. High-Performance mouse-movement 3D parallax on the profile image
+            const heroImgContainer = root.querySelector(".hero-image-container");
+            if (heroSec && heroImgContainer) {
+              gsap.set(heroImgContainer, { transformPerspective: 1000 });
+              
+              const xTo = gsap.quickTo(heroImgContainer, "rotationY", { duration: 0.5, ease: "power3.out" });
+              const yTo = gsap.quickTo(heroImgContainer, "rotationX", { duration: 0.5, ease: "power3.out" });
+              const xMoveTo = gsap.quickTo(heroImgContainer, "x", { duration: 0.5, ease: "power3.out" });
+              const yMoveTo = gsap.quickTo(heroImgContainer, "y", { duration: 0.5, ease: "power3.out" });
+
+              const getPercentX = gsap.utils.normalize(0, window.innerWidth);
+              const getPercentY = gsap.utils.normalize(0, window.innerHeight);
+              const mapAngle = gsap.utils.mapRange(0, 1, -12, 12);
+              const mapMove = gsap.utils.mapRange(0, 1, -8, 8);
+
+              onMouseMove = (e: MouseEvent) => {
+                const px = getPercentX(e.clientX);
+                const py = getPercentY(e.clientY);
+                xTo(mapAngle(px));
+                yTo(-mapAngle(py));
+                xMoveTo(mapMove(px));
+                yMoveTo(mapMove(py));
+              };
+
+              onMouseLeave = () => {
+                xTo(0);
+                yTo(0);
+                xMoveTo(0);
+                yMoveTo(0);
+              };
+
+              heroSec.addEventListener("mousemove", onMouseMove);
+              heroSec.addEventListener("mouseleave", onMouseLeave);
+            }
 
             ScrollTrigger.refresh();
           },
@@ -440,7 +612,7 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
         );
       }, root);
 
-      (window as any).__indexPageAnimations = { ctx, mm };
+      (window as any).__indexPageAnimations = { ctx, mm, onMouseMove, onMouseLeave, heroSec };
     }
 
     if (!(window as any).__indexPageAnimationEventsBound) {
