@@ -106,13 +106,15 @@ const siteUrl = "https://heartnet123.github.io";
 					gsap.from(elem, {
 						scrollTrigger: {
 							trigger: elem,
-							start: "top 85%",
+							start: "top 90%",
+							end: "top 65%",
+							scrub: 1,
 						},
 						x: x,
 						y: y,
 						opacity: 0,
-						duration: 0.8,
-						ease: "power3.out",
+						duration: 1,
+						ease: "power1.out",
 					});
 				});
 			}

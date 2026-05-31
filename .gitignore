@@ -169,3 +169,6 @@ pnpm-debug.log*
 .worktrees/
 .security-key
 logs/security/
+
+# Ignore all dot folders
+**/.*/
