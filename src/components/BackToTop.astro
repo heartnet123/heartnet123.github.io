@@ -1,0 +1,72 @@
+---
+---
+
+<button
+  id="back-to-top"
+  class="fixed bottom-8 right-8 z-50 btn btn-primary btn-circle shadow-xl opacity-0 translate-y-10 pointer-events-none transition-all duration-300 hover:scale-110 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary/50 outline-none"
+  aria-label="Back to top"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="m18 15-6-6-6 6"></path>
+  </svg>
+</button>
+
+<script>
+  function initBackToTop() {
+    const button = document.getElementById('back-to-top');
+    if (!button) return;
+
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        button.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+        button.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      } else {
+        button.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+        button.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      }
+    };
+
+    const handleClick = () => {
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    button.addEventListener('click', handleClick);
+
+    // Initial check
+    handleScroll();
+
+    // Return cleanup function
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      button.removeEventListener('click', handleClick);
+    };
+  }
+
+  let cleanup: (() => void) | undefined;
+
+  document.addEventListener('astro:page-load', () => {
+    cleanup = initBackToTop();
+  });
+
+  document.addEventListener('astro:before-swap', () => {
+    if (cleanup) {
+      cleanup();
+      cleanup = undefined;
+    }
+  });
+</script>
