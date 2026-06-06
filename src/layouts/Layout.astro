@@ -38,6 +38,13 @@ const siteUrl = "https://heartnet123.github.io";
 		<ClientRouter />
 	</head>
 	<body>
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+		>
+			Skip to content
+		</a>
+
 		<button
 			id="sidebar-toggle"
 			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -90,7 +97,7 @@ const siteUrl = "https://heartnet123.github.io";
 			}
 
 			function initScrollReveals() {
-				if (document.querySelector("#index-page, #about-page")) return;
+				if (document.querySelector("[data-page='index'], [data-page='about']")) return;
 
 				gsap.utils.toArray(".gsap-reveal").forEach((elem: any) => {
 					let x = 0,
