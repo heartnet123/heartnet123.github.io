@@ -17,6 +17,7 @@ const isActive = (path: string) => {
         id="close-sidebar"
         class="lg:hidden absolute top-4 right-4 p-3 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
         aria-label="Close Sidebar"
+        aria-expanded="false"
     >
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -279,12 +280,16 @@ const isActive = (path: string) => {
             sidebar?.classList.remove("-translate-x-full");
             overlay?.classList.remove("hidden");
             document.body.style.overflow = "hidden";
+            toggleBtn?.setAttribute("aria-expanded", "true");
+            closeBtn?.setAttribute("aria-expanded", "true");
         }
 
         function closeSidebar() {
             sidebar?.classList.add("-translate-x-full");
             overlay?.classList.add("hidden");
             document.body.style.overflow = "";
+            toggleBtn?.setAttribute("aria-expanded", "false");
+            closeBtn?.setAttribute("aria-expanded", "false");
         }
 
         // Store handlers for cleanup
