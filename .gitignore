@@ -172,3 +172,4 @@ logs/security/
 
 # Ignore all dot folders
 **/.*/
+launch-video/
