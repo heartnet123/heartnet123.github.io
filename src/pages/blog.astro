@@ -20,47 +20,12 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 >
     <!-- Custom Style Injection -->
     <style is:inline>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap');
-            
         .font-mono-custom {
             font-family: 'JetBrains Mono', monospace;
         }
 
         .font-sans-custom {
             font-family: 'Space Grotesk', sans-serif;
-        }
-
-        /* Custom scrollbar for an editorial feel */
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: oklch(var(--bc) / 0.2);
-            border-radius: 2px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: oklch(var(--bc) / 0.4);
-        }
-
-        /* Hide scrollbar for horizontal navs */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* Subtle grid background */
-        .bg-grid {
-            background-image: 
-                linear-gradient(to right, oklch(var(--bc) / 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, oklch(var(--bc) / 0.03) 1px, transparent 1px);
-            background-size: 32px 32px;
         }
 
         /* Specific NXLVL overrides refined for Forest theme */

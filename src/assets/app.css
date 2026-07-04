@@ -1,6 +1,122 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+:root {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --shadow-soft: 0 4px 20px -2px rgba(34, 197, 94, 0.08), 0 2px 8px -1px rgba(34, 197, 94, 0.04);
+  --shadow-soft-hover: 0 12px 30px -4px rgba(34, 197, 94, 0.16), 0 4px 12px -2px rgba(34, 197, 94, 0.08);
+}
+
+/* 
+ * Design System Scales
+ * 
+ * Radius Scale:
+ * - --radius-box: 0.25rem (tight components, small inputs)
+ * - rounded-lg / --radius-field: 0.5rem (buttons, form inputs)
+ * - rounded-xl: 0.75rem (default card components)
+ * - rounded-2xl: 1rem (dialogs, large cards)
+ * 
+ * Z-Index Scale:
+ * - z-[1]..[10] (inline positioning, badges, text highlights)
+ * - z-10 / z-20 (cards, layout components)
+ * - z-50 (fixed navigation, header overlays)
+ * - z-[60] (sidebar toggles, mobile overlays)
+ * - z-[100] (global skip links, modals)
+ */
+
+html {
+  font-family: var(--font-display);
+}
+
+.font-mono, .font-mono-custom {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+/* Keyboard accessibility */
+:focus-visible {
+  outline: 2px solid oklch(var(--p));
+  outline-offset: 2px;
+}
+
+/* Button & Link Active State */
+.btn:active, a:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Site-wide Noise Grain overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/noise.svg');
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Custom scrollbar for an editorial feel */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: oklch(var(--bc) / 0.2);
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: oklch(var(--bc) / 0.4);
+}
+
+/* Hide scrollbar for horizontal navs */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Subtle grid background */
+.bg-grid {
+    background-image: 
+        linear-gradient(to right, oklch(var(--bc) / 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, oklch(var(--bc) / 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+/* Skill Tag Chip System */
+.skill-chip {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: none;
+  color: oklch(var(--bc) / 0.75);
+  background: oklch(var(--b1) / 0.4);
+  border-bottom: 2px solid oklch(var(--p) / 0.3);
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.skill-chip:hover {
+  color: oklch(var(--bc));
+  border-bottom-color: oklch(var(--p));
+  background: oklch(var(--b1) / 0.8);
+}
+
 /* Hero Animations */
 @keyframes fadeInUp {
     from {
@@ -178,10 +294,12 @@
     transform: translate(0) scale(1);
 }
 
-/* Card hover effects */
+/* Card hover effects - cleaner, no layout shift */
+.card {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
 .card:hover {
-    transform: translateY(-5px);
-    transition: transform 0.3s ease;
+    border-color: oklch(var(--p) / 0.2);
 }
 
 /* Button improvements */
