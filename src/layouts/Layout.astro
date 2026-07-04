@@ -31,13 +31,28 @@ const siteUrl = "https://heartnet123.github.io";
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="My Portfolio" />
+<meta property="og:image" content={`${siteUrl}/og-image.png`} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${title} — ${description}`} />
+<meta property="og:url" content={Astro.url.href} />
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
 		<ClientRouter />
 	</head>
 	<body>
+		<a
+			href="#main"
+			class="sr-only focus:not-sr-only fixed top-4 left-4 z-[100] px-4 py-2 bg-base-100 border border-primary text-primary rounded-lg text-sm font-semibold shadow-[var(--shadow-soft)]"
+		>
+			Skip to main content
+		</a>
 		<button
 			id="sidebar-toggle"
 			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -59,7 +74,7 @@ const siteUrl = "https://heartnet123.github.io";
 		</button>
 
 		<Sidebar />
-		<div class="lg:ml-20">
+		<div class="lg:ml-20" id="main">
 			<slot />
 			<Footer />
 		</div>
@@ -106,13 +121,15 @@ const siteUrl = "https://heartnet123.github.io";
 					gsap.from(elem, {
 						scrollTrigger: {
 							trigger: elem,
-							start: "top 85%",
+							start: "top 90%",
+							end: "top 65%",
+							scrub: 1,
 						},
 						x: x,
 						y: y,
 						opacity: 0,
-						duration: 0.8,
-						ease: "power3.out",
+						duration: 1,
+						ease: "power1.out",
 					});
 				});
 			}

@@ -493,12 +493,13 @@ const interests = [
               if (!sectionItems.length) return;
 
               gsap.timeline({
-                defaults: { ease: "power3.out", overwrite: "auto" },
+                defaults: { ease: "power1.out", overwrite: "auto" },
                 scrollTrigger: {
                   id: `about-reveal-${index}`,
                   trigger: section,
-                  start: "top 82%",
-                  toggleActions: "play none none reverse",
+                  start: "top 85%",
+                  end: "top 50%",
+                  scrub: 1,
                 },
               }).to(sectionItems, {
                 autoAlpha: 1,
