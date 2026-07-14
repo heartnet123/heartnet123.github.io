@@ -559,6 +559,218 @@ export const projects: Project[] = [
     skills: ["Django", "PostgreSQL", "Python"],
     featured: true,
   },
+  {
+    slug: "koko",
+    name: "KoKo",
+    tagline: "A modern, cinematic anime library and tracking platform.",
+    description:
+      "KoKo is a fast, responsive, and visually immersive catalog designed for anime watchers, from casual fans to dedicated otakus. Built using Nuxt 4 and Go, the platform moves away from database-heavy grid interfaces toward content-first cinematic layouts, utilizing a rate-limit-aware Go backend caching proxy.",
+    heroImage: "/projects/koko1.png",
+    screenshots: [
+      { src: "/projects/koko1.png", alt: "KoKo homepage" },
+      { src: "/projects/koko2.png", alt: "KoKo anime browsing screen" },
+      { src: "/projects/koko3.png", alt: "KoKo anime detail screen" },
+      { src: "/projects/koko4.png", alt: "KoKo watchlist screen" },
+      { src: "/projects/koko5.png", alt: "KoKo search screen" },
+    ],
+    problem:
+      "Traditional anime tracking platforms are often cluttered with wall-to-wall textual statistics, slow to load, and feel more like database spreadsheets than entertainment apps. Furthermore, querying public anime APIs (like MyAnimeList via Jikan) is heavily restricted to around 3 requests per second, which leads to slow page loads, empty components, and frequent HTTP 429 Rate Limit errors under normal user activity.",
+    solution:
+      "KoKo frames vibrant anime artwork in a clean, dark-themed, cinematic interface using Nuxt UI and custom CSS animations. To tackle API constraints, the system deploys a Go-based backend that caches responses (5-minute TTL), implements exponential backoff retry policies, debounces search requests, and lazy-loads genre rows only when they scroll into the viewport.",
+    techStack: [
+      {
+        name: "Nuxt 4 / Vue 3",
+        reason:
+          "Serves as the high-performance reactive frontend structure, utilizing layouts to swap guest and user views instantly and manage smooth page routing.",
+      },
+      {
+        name: "Go & Gin Framework",
+        reason:
+          "Powers the backend proxy server, handling API caching, session tokens, and watchlist database operations with negligible CPU and memory usage.",
+      },
+      {
+        name: "Supabase & PostgreSQL",
+        reason:
+          "Provides the underlying relational database storing user profiles and watchlist join tables with optimized indexes.",
+      },
+      {
+        name: "Nuxt UI & Tailwind CSS",
+        reason:
+          "Facilitates building high-end, responsive dark-mode elements using custom CSS utility definitions and pre-configured component styling.",
+      },
+      {
+        name: "VueUse",
+        reason:
+          "Integrates viewport intersection observers to implement lazy fetching of anime rows, lowering bandwidth consumption for both the client and server.",
+      },
+      {
+        name: "JWT & bcrypt",
+        reason:
+          "Secures authentication flows by hashing passwords and issuing JSON Web Tokens saved in secure cookies and request headers.",
+      },
+    ],
+    features: [
+      "Ken Burns Hero Carousel: Panning slides showing current season's top-airing titles, rotating every 8s with automatic pause overrides.",
+      "Viewport-Based Lazy Loading: Horizontal genre rows utilizing intersection observers to only execute fetches when visible.",
+      "Smart Anime Rails: Set-based filtering on MAL IDs to prevent duplicate anime listings, with smooth horizontal scroll snapping.",
+      "Instant Search & Debouncing: Fast client-side browse and filter engine that processes search combinations with debounced query execution.",
+      "One-Click Watchlist: Unified watchlist store that updates user tracking across all cards, sliders, and screens in real time.",
+      "Prefers-Reduced-Motion: Full accessibility checks targeting OS settings to disable resource-intensive panning and skeleton-shimmer gradients.",
+    ],
+    challenges: [
+      {
+        title: "Jikan API Strict Rate Limiting (HTTP 429)",
+        description:
+          "Loading multiple category rails simultaneously immediately exhausted Jikan's 3 req/s limit. We solved this by developing an in-memory caching layer in Go to serve cached anime listings within 5 minutes. We also implemented a retry composable with a 2-second backoff and configured lazy intersection observers on the frontend to stagger API requests.",
+      },
+      {
+        title: "Maintaining Watchlist State Across Views",
+        description:
+          "Ensuring visual bookmarks (like active hearts/stars) synced instantly across hero slides, categories, and detail cards could easily lead to state mismatches. We structured a central auth composable using Nuxt state keys (`useState`) that holds user session and watchlist state, allowing unified O(1) checks for item status across all components.",
+      },
+      {
+        title: "Achieving Smooth 60fps animations on Large Media Lists",
+        description:
+          "Rendering dozens of high-res anime posters side-by-side often causes page jank. We decoupled CSS layouts from resizing, moved carousel panning strictly to GPU-accelerated keyframe transforms (`scale()` and `translate()`), and styled lightweight linear shimmer skeletons for content that is loading.",
+      },
+    ],
+    github: "https://github.com/heartnet123/Koko",
+    demo: "",
+    skills: [
+      "Nuxt 4",
+      "Vue 3",
+      "Go",
+      "PostgreSQL",
+      "Supabase",
+      "Tailwind CSS",
+      "API Caching Proxy",
+      "JWT Auth",
+    ],
+    featured: true,
+  },
+  {
+    slug: "nagare-ai-agent-os",
+    name: "Nagare AI Agent OS",
+    tagline:
+      "A unified local workspace and operating system for managing, evaluating, and running AI agents and RAG pipelines.",
+    description:
+      "Nagare (流) is a full-stack developer cockpit designed to consolidate the fragmented lifecycle of AI agent workflows. Instead of managing LLMs, vector database instances, Model Context Protocol (MCP) integrations, and telemetry metrics across disjointed terminals and configs, Nagare aggregates them into a single local dashboard. Built with FastAPI and Nuxt 4, it provides developers with a production-ready dashboard to build agents via system prompt composition, register MCP servers, index large documents into a ChromaDB vector store, run RAG evaluations on custom datasets, and inspect real-time performance telemetry.",
+    heroImage: "/images/portfolio/nagare/hero.webp",
+    screenshots: [
+      {
+        src: "/images/portfolio/nagare/dashboard.webp",
+        alt: "Nagare OS Developer Dashboard showing active agent chat sessions, system stats, and workspace navigation.",
+      },
+      {
+        src: "/images/portfolio/nagare/agent-builder.webp",
+        alt: "No-code Agent configuration interface showing system prompt settings, dynamic tool selection, and model routing parameters.",
+      },
+      {
+        src: "/images/portfolio/nagare/rag-evaluation.webp",
+        alt: "RAG pipeline evaluation workbench displaying benchmark runs, faithfulness indexes, and relevance scores.",
+      },
+      {
+        src: "/images/portfolio/nagare/knowledge-base.webp",
+        alt: "Knowledge base manager with source document lists, chunk preview panels, and semantic search vector inspectors.",
+      },
+      {
+        src: "/images/portfolio/nagare/mcp-manager.webp",
+        alt: "Model Context Protocol (MCP) server manager for configuring and debugging external tools.",
+      },
+    ],
+    problem:
+      "Building agentic LLM systems is highly fragmented. Developers are forced to cobble together CLI tools, Jupyter notebooks, local databases, and custom UI wrappers just to test prompt adjustments, evaluate search relevance, check system logs, or connect third-party APIs. There is no unified runtime cockpit that facilitates rapid iteration, leading to silent prompt failures, untracked API costs, poorly configured RAG datasets, and difficult-to-debug tool execution loops.",
+    solution:
+      "Nagare provides an integrated control plane. By coupling an asynchronous FastAPI server with a Vue-based Nuxt 4 application, it delivers a high-fidelity workspace. Developers can create agents on the fly, immediately chat with them using live SSE streaming, inspect XML-based tool execution in real-time, configure Model Context Protocol (MCP) servers, upload up to 50MB files (PDF, DOCX, Markdown, etc.) directly into a ChromaDB vector index, and test retrieval quality against custom datasets. This brings full observability, testing, and operation of AI agents into a single, cohesive local OS.",
+    techStack: [
+      {
+        name: "FastAPI & Uvicorn",
+        reason:
+          "Chosen as the asynchronous Python core to support low-latency WebSockets, background tasks, and Server-Sent Events (SSE) streaming for agent responses.",
+      },
+      {
+        name: "Nuxt 4 & Vue.js 3",
+        reason:
+          "Leveraged for full-stack frontend layout, automatic routing, modular codebases, and rich state composition with TypeScript.",
+      },
+      {
+        name: "Nuxt UI 4 & Tailwind CSS 4",
+        reason:
+          "Implemented for a premium, responsive dark-mode dashboard using customized HSL color systems, smooth micro-animations, and glassmorphism cards.",
+      },
+      {
+        name: "ChromaDB",
+        reason:
+          "Serves as the local vector store for document chunk ingestion, enabling quick semantic memory and context-aware RAG pipelines.",
+      },
+      {
+        name: "SQLite & SQLAlchemy",
+        reason:
+          "Acts as the transactional metadata store for agent settings, conversation histories, and RAG evaluation runs with cascade-on-delete constraints.",
+      },
+      {
+        name: "Pydantic v2",
+        reason:
+          "Enforces strict type validation and serialization schemas for agent specifications, database records, and API endpoints.",
+      },
+      {
+        name: "PyMuPDF & python-docx",
+        reason:
+          "Parses complex documents (PDFs, DOCX) to extract page-level text structure for deterministic vector indexing.",
+      },
+      {
+        name: "Lucide Vue Icons",
+        reason:
+          "Provides a clean, consistent, and customizable icon library for dashboard status indicators, action chips, and navigation components.",
+      },
+      {
+        name: "TypeScript 6",
+        reason:
+          "Provides end-to-end type safety, preventing layout bugs and ensuring strict schema matching when consuming the FastAPI backend.",
+      },
+    ],
+    features: [
+      "Unified AI Agent OS Dashboard: Single-screen control center for agent states, telemetry, and system health.",
+      "Server-Sent Events (SSE) Chat Stream: Low-latency streaming chat interface that renders markdown responses, syntax highlighting, and live agent thoughts.",
+      "Model Context Protocol (MCP) Management: UI for registering, updating, and testing JSON-RPC-based local and remote tool servers.",
+      "Vector Knowledge Base & RAG: Drag-and-drop document upload (PDF, DOCX, TXT) with automatic chunk preview and direct vector search inspection.",
+      "RAG Pipeline Evaluations: Benchmark suite to run custom test cases against RAG indices and measure faithfulness, precision, and context relevance.",
+      "Real-Time System Monitoring: Local telemetry dashboard tracking CPU, memory, request rates, token consumption, API costs, and trace logs.",
+      "Flexible Model Routing: Ability to dynamically hot-swap LLM engines (OpenAI, Anthropic, Google, Ollama) and adjust parameters per session.",
+      "Automated Memory System: Semantic memory database powered by local SQLite relations and Chroma vector indices to persist facts across chats.",
+    ],
+    challenges: [
+      {
+        title: "Asynchronous Message Ingest & SQLite Locks",
+        description:
+          "Persisting incoming SSE messages, tool starts, and results into SQLite during active LLM streaming caused database contention and occasional SQLite busy errors. We solved this by implementing an async SessionManager and database-access queue that batches writes and ensures non-blocking transactional reads for active client sessions.",
+      },
+      {
+        title: "Dynamic Model Context Protocol (MCP) Integration",
+        description:
+          "Handling process lifecycles and standard streams for external local/remote MCP tools required a robust wrapper. We developed a dynamic client service in Python that wraps server execution, reads tool schema definitions, handles JSON-RPC calls, and maps them to the agent's XML-style tool invocation block in real time.",
+      },
+      {
+        title: "High-Performance RAG Document Ingestion",
+        description:
+          "Chunking large files (up to 50MB) and indexing them into ChromaDB in real-time caused UI thread lag on long files. We solved this by moving the chunking/parsing logic to async FastAPI background threads, utilizing PyMuPDF's page-level extractor to partition documents, storing deterministic SHA-256 file hashes to prevent duplicates, and utilizing SQLite cascades to delete orphaned chunks when documents are removed.",
+      },
+    ],
+    github: "https://github.com/heartnet123/nagare",
+    demo: "https://nagare.dev",
+    skills: [
+      "FastAPI",
+      "Nuxt.js",
+      "ChromaDB",
+      "LLM Agents",
+      "TypeScript",
+      "Python",
+      "Model Context Protocol",
+      "RAG Evaluation",
+      "Vector Search",
+    ],
+    featured: true,
+  },
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {

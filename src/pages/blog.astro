@@ -112,7 +112,6 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
                         return (
                             <article
                                 class="group relative p-6 md:p-8 rounded border border-base-content/10 bg-base-100/20 hover:bg-base-100/40 hover:border-primary/30 transition-all duration-500 flex flex-col gap-5 overflow-hidden cursor-pointer gsap-reveal gsap-up"
-                                style={`transition-delay: ${i * 50}ms`}
                                 data-post-id={post.slug}
                             >
                                 <!-- Subtle hover gradient slider -->
