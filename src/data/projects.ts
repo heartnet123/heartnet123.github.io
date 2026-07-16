@@ -21,7 +21,7 @@ export interface Project {
   featured: boolean;
 }
 
-export const projects: Project[] = [
+const projectsByAge: Project[] = [
   {
     slug: "portfolio-website",
     name: "Developer Portfolio",
@@ -771,6 +771,12 @@ export const projects: Project[] = [
     ],
     featured: true,
   },
+];
+
+export const projects: Project[] = [
+  projectsByAge[projectsByAge.length - 1],
+  projectsByAge[projectsByAge.length - 2],
+  ...projectsByAge.slice(0, -2),
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {
