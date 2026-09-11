@@ -493,13 +493,13 @@ const interests = [
               if (!sectionItems.length) return;
 
               gsap.timeline({
-                defaults: { ease: "power1.out", overwrite: "auto" },
+                defaults: { ease: "power2.out", overwrite: "auto" },
                 scrollTrigger: {
                   id: `about-reveal-${index}`,
                   trigger: section,
                   start: "top 85%",
-                  end: "top 50%",
-                  scrub: 1,
+                  toggleActions: "play none none none",
+                  once: true,
                 },
               }).to(sectionItems, {
                 autoAlpha: 1,
@@ -511,6 +511,8 @@ const interests = [
               });
             });
 
+            window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+            requestAnimationFrame(() => ScrollTrigger.refresh());
             ScrollTrigger.refresh();
           },
           root,

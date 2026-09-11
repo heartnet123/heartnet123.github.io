@@ -574,13 +574,13 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
               );
 
               const sectionTimeline = gsap.timeline({
-                defaults: { ease: "power1.out", overwrite: "auto" },
+                defaults: { ease: "power2.out", overwrite: "auto" },
                 scrollTrigger: {
                   id: `index-reveal-${section.id || index}`,
                   trigger: section,
                   start: "top 85%",
-                  end: "top 45%",
-                  scrub: 1.2,
+                  toggleActions: "play none none none",
+                  once: true,
                 },
               });
 
@@ -700,6 +700,8 @@ const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
               heroSec.addEventListener("mouseleave", onMouseLeave);
             }
 
+            window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+            requestAnimationFrame(() => ScrollTrigger.refresh());
             ScrollTrigger.refresh();
           },
           root,
