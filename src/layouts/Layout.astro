@@ -57,6 +57,8 @@ const siteUrl = "https://heartnet123.github.io";
 			id="sidebar-toggle"
 			class="lg:hidden fixed top-4 left-4 z-[60] p-3 bg-base-100 border border-white/10 rounded-lg text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
 			aria-label="Toggle Sidebar"
+			aria-expanded="false"
+			aria-controls="sidebar"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -109,18 +111,21 @@ const siteUrl = "https://heartnet123.github.io";
 
 			function initScrollReveals() {
 				if (document.querySelector("#index-page, #about-page")) return;
+				if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+					gsap.utils.toArray(".gsap-reveal").forEach((elem: any) => {
+						gsap.set(elem, { opacity: 1, x: 0, y: 0, clearProps: "all" });
+					});
+					return;
+				}
 
 				revealContext = gsap.context(() => {
 				gsap.utils.toArray(".gsap-reveal").forEach((elem: any) => {
 					let x = 0,
 						y = 50;
-					if (elem.classList.contains("gsap-left"))
-						((x = -50), (y = 0));
-					if (elem.classList.contains("gsap-right"))
-						((x = 50), (y = 0));
-					if (elem.classList.contains("gsap-up")) ((x = 0), (y = 50));
-					if (elem.classList.contains("gsap-down"))
-						((x = 0), (y = -50));
+					if (elem.classList.contains("gsap-left")) { x = -50; y = 0; }
+					if (elem.classList.contains("gsap-right")) { x = 50; y = 0; }
+					if (elem.classList.contains("gsap-up")) { x = 0; y = 50; }
+					if (elem.classList.contains("gsap-down")) { x = 0; y = -50; }
 
 					gsap.from(elem, {
 						scrollTrigger: {

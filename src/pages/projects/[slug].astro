@@ -662,6 +662,25 @@ const { project } = Astro.props;
                     if (event.key === "ArrowRight") update(activeIndex + 1);
                 });
 
+                let touchStartX = 0;
+                carousel.addEventListener(
+                    "touchstart",
+                    (e: TouchEvent) => {
+                        touchStartX = e.changedTouches[0].screenX;
+                    },
+                    { passive: true },
+                );
+                carousel.addEventListener(
+                    "touchend",
+                    (e: TouchEvent) => {
+                        const diff = touchStartX - e.changedTouches[0].screenX;
+                        if (Math.abs(diff) > 40) {
+                            update(activeIndex + (diff > 0 ? 1 : -1));
+                        }
+                    },
+                    { passive: true },
+                );
+
                 syncState();
             });
         }

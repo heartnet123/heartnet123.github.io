@@ -22,7 +22,7 @@ document.addEventListener('astro:page-load', () => {
     threshold: 0
   };
 
-  const observerCallback = (entries, observer) => {
+  const observerCallback = (entries) => {
     entries.forEach(entry => {
       const id = entry.target.getAttribute('id');
       // Use CSS.escape to handle special characters in IDs safely
