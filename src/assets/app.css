@@ -347,3 +347,54 @@ section {
     --depth: 0;
     --noise: 0;
 }
+
+/* Stage 3D Perspective for GSAP Dolly Zoom */
+.stage-container {
+    perspective: 1000px;
+    perspective-origin: 50% 50%;
+}
+
+.stage-view {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+
+
+.dolly-active {
+    overflow-x: clip;
+}
+
+.dolly-image-clone {
+    position: fixed;
+    z-index: 50;
+    object-fit: cover;
+    pointer-events: none;
+    border-radius: 0.75rem;
+    transform-origin: 0 0;
+    will-change: transform, border-radius;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+.hero-transition-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dolly-image-clone {
+        display: none !important;
+    }
+}
+
+.dolly-outgoing {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    overflow: clip;
+    perspective: 1000px;
+    perspective-origin: 50% 50%;
+    pointer-events: none;
+    z-index: 40;
+}

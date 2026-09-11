@@ -24,7 +24,9 @@ const { project } = Astro.props;
             <img
                 src={project.heroImage}
                 alt={project.name}
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
+                data-project-hero-image
                 class="w-full h-full object-cover"
             />
             <div

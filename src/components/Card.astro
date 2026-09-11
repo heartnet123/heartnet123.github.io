@@ -26,6 +26,7 @@ const isExternal = !slug;
   rel={isExternal ? "noopener noreferrer" : undefined}
   class="block group"
   aria-label={`View project: ${name}`}
+  data-project-card={slug ? "" : undefined}
 >
   <div
     class="bg-base-100/60 rounded-xl overflow-hidden border border-white/8 backdrop-blur-sm shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-soft-hover)] hover:border-white/12 transition-all duration-300 gsap-reveal gsap-up"
@@ -38,6 +39,7 @@ const isExternal = !slug;
             src={image}
             alt={name}
             loading="lazy"
+            data-project-card-image
             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         )
