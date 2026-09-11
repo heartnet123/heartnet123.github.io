@@ -74,9 +74,11 @@ const siteUrl = "https://heartnet123.github.io";
 		</button>
 
 		<Sidebar />
-		<div class="lg:ml-20" id="main">
-			<slot />
-			<Footer />
+		<div class="lg:ml-20 stage-container" id="main">
+			<div id="page-stage" class="stage-view">
+				<slot />
+				<Footer />
+			</div>
 		</div>
 		<script src="../assets/scroll-tracker.js"></script>
 		<script>
@@ -87,6 +89,10 @@ const siteUrl = "https://heartnet123.github.io";
 			gsap.registerPlugin(ScrollTrigger);
 
 			let lenis: any;
+			let revealContext: gsap.Context | null = null;
+			let pendingScrollInit = false;
+
+			gsap.ticker.add((time) => lenis?.raf(time * 1000));
 
 			function initLenis() {
 				if (lenis) {
@@ -96,9 +102,6 @@ const siteUrl = "https://heartnet123.github.io";
 
 				lenis.on("scroll", ScrollTrigger.update);
 
-				gsap.ticker.add((time) => {
-					lenis.raf(time * 1000);
-				});
 
 				gsap.ticker.lagSmoothing(0);
 				(window as any).lenis = lenis; // Expose globally for things like scroll tracker
@@ -107,6 +110,7 @@ const siteUrl = "https://heartnet123.github.io";
 			function initScrollReveals() {
 				if (document.querySelector("#index-page, #about-page")) return;
 
+				revealContext = gsap.context(() => {
 				gsap.utils.toArray(".gsap-reveal").forEach((elem: any) => {
 					let x = 0,
 						y = 50;
@@ -132,12 +136,219 @@ const siteUrl = "https://heartnet123.github.io";
 						ease: "power1.out",
 					});
 				});
+				}, document.getElementById("page-stage")!);
 			}
+
+			function initPageScroll() {
+				pendingScrollInit = false;
+				initScrollReveals();
+				ScrollTrigger.refresh();
+			}
+
+			// Preserve the outgoing view across the swap to overlap both zooms.
+			let finishDolly: (() => void) | null = null;
+			let finishImageZoom: (() => void) | null = null;
+			let outgoing: HTMLElement | null = null;
+			let imageZoom: { clone: HTMLImageElement; cardRect: DOMRect; src: string } | null = null;
+			let mode: "in" | "out" | null = null;
+			const isDetail = (path: string) => /^\/projects\/[^/]+\/?$/.test(path);
+			const isList = (path: string) => /^\/projects\/?$/.test(path);
+			const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+			function cleanupInterruptedTransitions() {
+				if (finishImageZoom) finishImageZoom();
+				if (finishDolly) finishDolly();
+				document.querySelectorAll(".dolly-image-clone").forEach((el) => el.remove());
+				imageZoom = null;
+			}
+
+			document.addEventListener("click", (event) => {
+				if (prefersReducedMotion()) return;
+				const mouseEvent = event as MouseEvent;
+				if (mouseEvent.button !== 0 || mouseEvent.ctrlKey || mouseEvent.metaKey || mouseEvent.shiftKey || mouseEvent.altKey) return;
+				const target = event.target instanceof Element ? event.target : null;
+				const card = target?.closest<HTMLAnchorElement>("a[data-project-card], a[href]");
+				if (!card) return;
+				let targetUrl: URL;
+				try {
+					targetUrl = new URL(card.href, location.origin);
+				} catch {
+					return;
+				}
+				if (!isDetail(targetUrl.pathname) || targetUrl.origin !== location.origin) return;
+				const image = card.querySelector<HTMLImageElement>("[data-project-card-image]");
+				if (!image) return;
+
+				cleanupInterruptedTransitions();
+
+				const rect = image.getBoundingClientRect();
+				const clone = image.cloneNode(true) as HTMLImageElement;
+				clone.className = "dolly-image-clone";
+				Object.assign(clone.style, {
+					left: `${rect.left}px`,
+					top: `${rect.top}px`,
+					width: `${rect.width}px`,
+					height: `${rect.height}px`,
+				});
+				document.body.append(clone);
+				imageZoom = { clone, cardRect: rect, src: image.currentSrc || image.src };
+			}, true);
+
+			document.addEventListener("click", (event) => {
+				if ((finishDolly || finishImageZoom) && event.target instanceof Element && event.target.closest("a")) {
+					cleanupInterruptedTransitions();
+				}
+			}, true);
+
+			document.addEventListener("astro:before-preparation", () => {
+				cleanupInterruptedTransitions();
+			});
+
+			document.addEventListener("astro:before-swap", (event) => {
+				mode = isList(event.from.pathname) && isDetail(event.to.pathname) ? "in"
+					: isDetail(event.from.pathname) && isList(event.to.pathname) ? "out" : null;
+				if (!mode || prefersReducedMotion()) {
+					cleanupInterruptedTransitions();
+					return;
+				}
+				const stage = document.getElementById("page-stage");
+				if (!stage) return;
+				event.viewTransition.ready.catch(() => {});
+				event.viewTransition.skipTransition();
+				lenis?.stop();
+
+				if (imageZoom && mode === "in") {
+					const incomingHero = event.newDocument.querySelector<HTMLImageElement>("[data-project-hero-image]");
+					if (incomingHero) {
+						incomingHero.classList.add("hero-transition-hidden");
+					}
+					return;
+				}
+
+				const rect = stage.getBoundingClientRect();
+				outgoing = document.createElement("div");
+				outgoing.className = "dolly-outgoing";
+				outgoing.inert = true;
+				outgoing.setAttribute("aria-hidden", "true");
+				outgoing.style.left = rect.left + "px";
+				outgoing.style.width = rect.width + "px";
+				const snapshot = stage.cloneNode(true) as HTMLElement;
+				snapshot.removeAttribute("id");
+				snapshot.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
+				snapshot.querySelectorAll("script").forEach((el) => el.remove());
+				snapshot.style.marginTop = rect.top + "px";
+				snapshot.style.transformOrigin = "50% " + (window.innerHeight / 2 - rect.top) + "px";
+				outgoing.append(snapshot);
+			});
+
+			// Release old page animations
+			document.addEventListener("astro:before-swap", () => {
+				revealContext?.revert();
+				revealContext = null;
+				pendingScrollInit = false;
+			});
+
+			document.addEventListener("astro:after-swap", () => {
+				if (imageZoom && mode === "in") {
+					const { clone, cardRect } = imageZoom;
+					imageZoom = null;
+					mode = null;
+
+					const hero = document.querySelector<HTMLImageElement>("[data-project-hero-image]");
+					if (!hero) {
+						clone.remove();
+						initPageScroll();
+						lenis?.start();
+						return;
+					}
+
+					const heroRect = hero.getBoundingClientRect();
+					const dx = heroRect.left - cardRect.left;
+					const dy = heroRect.top - cardRect.top;
+					const scaleX = heroRect.width / cardRect.width;
+					const scaleY = heroRect.height / cardRect.height;
+
+					gsap.set(clone, {
+						transformOrigin: "0 0",
+						x: 0,
+						y: 0,
+						scaleX: 1,
+						scaleY: 1,
+						borderRadius: "0.75rem",
+						force3D: true,
+					});
+
+					const timeline = gsap.timeline({
+						onComplete: () => finishImageZoom?.(),
+					});
+
+					finishImageZoom = () => {
+						timeline.kill();
+						clone.remove();
+						hero.classList.remove("hero-transition-hidden");
+						gsap.set(hero, { clearProps: "opacity,visibility" });
+						finishImageZoom = null;
+						initPageScroll();
+						lenis?.start();
+					};
+
+					timeline.to(clone, {
+						x: dx,
+						y: dy,
+						scaleX: scaleX,
+						scaleY: scaleY,
+						borderRadius: "0px",
+						duration: 0.52,
+						ease: "power3.inOut",
+					});
+
+					return;
+				}
+
+				if (!outgoing || !mode) return;
+				const overlay = outgoing;
+				const zoomIn = mode === "in";
+				outgoing = null;
+				mode = null;
+				const stage = document.getElementById("page-stage");
+				if (!stage) { lenis?.start(); return; }
+				const container = stage.parentElement!;
+				const originY = window.innerHeight / 2 - stage.getBoundingClientRect().top;
+				document.body.append(overlay);
+				document.documentElement.classList.add("dolly-active");
+				container.style.perspectiveOrigin = "50% " + originY + "px";
+				gsap.set(stage, {
+					transformOrigin: "50% " + originY + "px",
+					scale: zoomIn ? 0.2 : 2.2, z: zoomIn ? -800 : 500,
+					opacity: 0, willChange: "transform, opacity",
+				});
+				const timeline = gsap.timeline({ onComplete: () => finishDolly?.() });
+				finishDolly = () => {
+					timeline.kill();
+					overlay.remove();
+					gsap.set(stage, { clearProps: "transform,transformOrigin,opacity,willChange" });
+					container.style.removeProperty("perspective-origin");
+					document.documentElement.classList.remove("dolly-active");
+					finishDolly = null;
+					if (pendingScrollInit) initPageScroll();
+					lenis?.start();
+				};
+				timeline.to(overlay.firstElementChild, {
+					scale: zoomIn ? 2.2 : 0.2, z: zoomIn ? 500 : -800,
+					opacity: 0, duration: 0.35, ease: "power3.in",
+				}, 0).to(stage, {
+					scale: 1, z: 0, opacity: 1, duration: 0.35, ease: "power3.out",
+				}, 0.12);
+			});
 
 			document.addEventListener("astro:page-load", () => {
 				initLenis();
-				initScrollReveals();
-				ScrollTrigger.refresh();
+				if (finishDolly || finishImageZoom) {
+					lenis?.stop();
+					pendingScrollInit = true;
+				} else {
+					initPageScroll();
+				}
 			});
 		</script>
 	</body>
