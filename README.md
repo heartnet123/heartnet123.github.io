@@ -61,16 +61,21 @@ The application leverages Astro 5's Islands Architecture to deliver ultra-fast s
 │       └── deploy.yml          # GitHub Pages deployment pipeline using Bun
 ├── public/
 │   ├── favicon.svg             # Site logo / icon
+│   ├── noise.svg               # Texture overlay
 │   ├── og-image.png            # Open Graph banner for social sharing
-│   └── resume.pdf              # Downloadable developer resume
+│   ├── resume.pdf              # Downloadable developer resume
+│   └── projects/              # Project images and screenshots
 ├── src/
 │   ├── assets/
 │   │   ├── app.css             # Main stylesheet & Tailwind imports
+│   │   ├── profile.jpg         # Profile photo
 │   │   └── scroll-tracker.js   # Reading progress indicator logic
 │   ├── components/
 │   │   ├── Card.astro          # Reusable project card component
+│   │   ├── navbar.astro        # Top navigation bar
 │   │   ├── Sidebar.astro       # Collapsible navigation drawer
 │   │   ├── Skill.astro         # Skill matrix display component
+│   │   ├── Footer.astro        # Site footer
 │   │   └── ui/                 # React UI primitives (buttons, slots)
 │   ├── content/
 │   │   ├── blog/               # Markdown content for blog posts
@@ -79,12 +84,18 @@ The application leverages Astro 5's Islands Architecture to deliver ultra-fast s
 │   │   └── projects.ts         # Portfolio projects data source
 │   ├── layouts/
 │   │   └── Layout.astro        # Master HTML layout, SEO meta & Lenis init
+│   ├── lib/
+│   │   ├── utils.ts            # Shared helpers (cn, class merging)
+│   │   └── readingTime.ts      # Blog reading-time estimation
 │   └── pages/
 │       ├── index.astro         # Hero section & featured work
 │       ├── about.astro         # Bio, experience timeline & background
 │       ├── projects.astro      # Full projects gallery with filters
+│       ├── projects/[slug].astro  # Individual project case study
 │       ├── blog.astro          # Article listing page
-│       └── work.astro          # Dedicated career & experience page
+│       ├── blog/[slug].astro   # Individual blog post
+│       ├── work.astro          # Dedicated career & experience page
+│       └── 404.astro           # Not-found page
 ├── astro.config.mjs            # Astro configuration & Vite plugins
 └── package.json
 ```
@@ -158,7 +169,7 @@ Playwright checks project image transitions, return links, Back/Forward, interru
 
 ### Adding a Project
 
-New portfolio items can be added directly to [`src/data/projects.ts`](file:///e:/webappgithub/heartnet123.github.io/src/data/projects.ts):
+New portfolio items can be added directly to [`src/data/projects.ts`](./src/data/projects.ts):
 
 ```typescript
 {
@@ -191,7 +202,7 @@ Add a Markdown file to `src/content/blog/my-post.md`:
 ---
 title: "Building Modern Web Apps"
 description: "A deep dive into serverless architectures and static site generation."
-pubDate: 2026-08-01
+date: "2026-08-01"
 tags: ["astro", "webdev"]
 ---
 
