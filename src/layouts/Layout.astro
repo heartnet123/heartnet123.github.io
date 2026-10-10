@@ -154,7 +154,7 @@ const siteUrl = "https://heartnet123.github.io";
 			let finishDolly: (() => void) | null = null;
 			let finishImageZoom: (() => void) | null = null;
 			let outgoing: HTMLElement | null = null;
-			let imageZoom: { clone: HTMLImageElement; cardRect: DOMRect; src: string } | null = null;
+			let imageZoom: { clone: HTMLImageElement; cardRect: DOMRect; hero: HTMLImageElement } | null = null;
 			let mode: "in" | "out" | null = null;
 			const isDetail = (path: string) => /^\/projects\/[^/]+\/?$/.test(path);
 			const isList = (path: string) => /^\/projects\/?$/.test(path);
@@ -163,54 +163,24 @@ const siteUrl = "https://heartnet123.github.io";
 			function cleanupInterruptedTransitions() {
 				if (finishImageZoom) finishImageZoom();
 				if (finishDolly) finishDolly();
+				imageZoom?.clone.remove();
+				imageZoom?.hero.classList.remove("hero-transition-hidden");
 				document.querySelectorAll(".dolly-image-clone").forEach((el) => el.remove());
 				imageZoom = null;
+				outgoing?.remove();
+				outgoing = null;
+				mode = null;
 			}
-
-			document.addEventListener("click", (event) => {
-				if (prefersReducedMotion()) return;
-				const mouseEvent = event as MouseEvent;
-				if (mouseEvent.button !== 0 || mouseEvent.ctrlKey || mouseEvent.metaKey || mouseEvent.shiftKey || mouseEvent.altKey) return;
-				const target = event.target instanceof Element ? event.target : null;
-				const card = target?.closest<HTMLAnchorElement>("a[data-project-card], a[href]");
-				if (!card) return;
-				let targetUrl: URL;
-				try {
-					targetUrl = new URL(card.href, location.origin);
-				} catch {
-					return;
-				}
-				if (!isDetail(targetUrl.pathname) || targetUrl.origin !== location.origin) return;
-				const image = card.querySelector<HTMLImageElement>("[data-project-card-image]");
-				if (!image) return;
-
-				cleanupInterruptedTransitions();
-
-				const rect = image.getBoundingClientRect();
-				const clone = image.cloneNode(true) as HTMLImageElement;
-				clone.className = "dolly-image-clone";
-				Object.assign(clone.style, {
-					left: `${rect.left}px`,
-					top: `${rect.top}px`,
-					width: `${rect.width}px`,
-					height: `${rect.height}px`,
-				});
-				document.body.append(clone);
-				imageZoom = { clone, cardRect: rect, src: image.currentSrc || image.src };
-			}, true);
-
-			document.addEventListener("click", (event) => {
-				if ((finishDolly || finishImageZoom) && event.target instanceof Element && event.target.closest("a")) {
-					cleanupInterruptedTransitions();
-				}
-			}, true);
 
 			document.addEventListener("astro:before-preparation", () => {
 				cleanupInterruptedTransitions();
 			});
 
 			document.addEventListener("astro:before-swap", (event) => {
-				mode = isList(event.from.pathname) && isDetail(event.to.pathname) ? "in"
+				const card = event.navigationType !== "traverse"
+					? event.sourceElement?.closest<HTMLAnchorElement>("a[data-project-card]") : null;
+				const image = card?.querySelector<HTMLImageElement>("[data-project-card-image]");
+				mode = (isList(event.from.pathname) || image) && isDetail(event.to.pathname) ? "in"
 					: isDetail(event.from.pathname) && isList(event.to.pathname) ? "out" : null;
 				if (!mode || prefersReducedMotion()) {
 					cleanupInterruptedTransitions();
@@ -222,12 +192,29 @@ const siteUrl = "https://heartnet123.github.io";
 				event.viewTransition.skipTransition();
 				lenis?.stop();
 
-				if (imageZoom && mode === "in") {
+				if (image && mode === "in") {
 					const incomingHero = event.newDocument.querySelector<HTMLImageElement>("[data-project-hero-image]");
-					if (incomingHero) {
+					const rect = image.getBoundingClientRect();
+					if (incomingHero && rect.width > 0 && rect.height > 0) {
+						const clone = image.cloneNode(true) as HTMLImageElement;
+						clone.className = "dolly-image-clone";
+						clone.src = image.currentSrc || image.src;
+						clone.removeAttribute("srcset");
+						clone.removeAttribute("sizes");
+						clone.removeAttribute("data-project-card-image");
+						clone.loading = "eager";
+						clone.alt = "";
+						clone.setAttribute("aria-hidden", "true");
+						Object.assign(clone.style, {
+							left: `${rect.left}px`, top: `${rect.top}px`,
+							width: `${rect.width}px`, height: `${rect.height}px`,
+						});
 						incomingHero.classList.add("hero-transition-hidden");
+						// Astro replaces the body, so carry the clone in the incoming document.
+						event.newDocument.body.append(clone);
+						imageZoom = { clone, cardRect: rect, hero: incomingHero };
+						return;
 					}
-					return;
 				}
 
 				const rect = stage.getBoundingClientRect();

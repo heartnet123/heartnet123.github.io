@@ -143,6 +143,17 @@ bun run preview
 > [!TIP]
 > The site builds to static files in the `./dist` directory, making it compatible with any static hosting provider.
 
+### Browser Regression Tests
+
+Install the test browser once, then run the production build and browser tests:
+
+```bash
+bunx playwright install chromium
+bun run test:e2e
+```
+
+Playwright checks project image transitions, return links, Back/Forward, interrupted navigation, reduced motion, and cancelled or new-tab clicks in headless Chromium. The suite runs with desktop and mobile viewport emulation, plus a desktop configuration without the View Transition API. Results are saved to `playwright-report/index.html`; traces are retained for failed tests.
+
 ## Customization
 
 ### Adding a Project
